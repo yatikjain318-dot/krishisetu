@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { TrendingUp, PhoneCall } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { TrendingUp, PhoneCall, Pause, Play } from "lucide-react";
 import { MANDIS_DATA } from "@/lib/data/mock-data";
 
 export interface TickerItem {
@@ -14,6 +14,9 @@ export interface TickerItem {
 }
 
 export function MandiTicker() {
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   // Generate synced ticker items from MANDIS_DATA
   const tickerItems: TickerItem[] = useMemo(() => {
     const items: TickerItem[] = [];
@@ -52,24 +55,44 @@ export function MandiTicker() {
     return items;
   }, []);
 
+  const shouldPause = isPaused || isHovered;
+
   return (
     <aside
       aria-label="Live Mandi Rates Ticker"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="w-full bg-[#0a0a0a] text-gray-200 border-b border-emerald-950/80 sticky top-0 z-50 h-9 sm:h-10 flex items-center shadow-md select-none overflow-hidden"
     >
-      {/* 1. Far Left Fixed Badge */}
-      <div className="shrink-0 h-full flex items-center pl-2.5 sm:pl-4 pr-3 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a] to-transparent z-20">
+      {/* 1. Far Left Fixed Badge with Play/Pause Button */}
+      <div className="shrink-0 h-full flex items-center pl-2.5 sm:pl-4 pr-3 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a] to-transparent z-20 gap-2">
         <span className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm shadow-emerald-500/20 border border-emerald-400/30 whitespace-nowrap">
           <TrendingUp className="w-3 h-3 text-emerald-100 animate-pulse" />
           <span>LIVE MANDI RATES</span>
         </span>
+
+        {/* Interactive Play/Pause Control Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsPaused(!isPaused);
+          }}
+          className="p-1 rounded-lg bg-white/10 hover:bg-emerald-600 text-gray-300 hover:text-white transition flex items-center justify-center cursor-pointer border border-white/10"
+          title={isPaused ? "Play Ticker" : "Pause Ticker"}
+          aria-label={isPaused ? "Play Ticker" : "Pause Ticker"}
+        >
+          {isPaused ? <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" /> : <Pause className="w-3 h-3 text-gray-300" />}
+        </button>
       </div>
 
-      {/* 2. Middle Continuous Infinite Auto-Scrolling Marquee (35s Speed) */}
+      {/* 2. Middle Continuous Infinite Auto-Scrolling Marquee (Slower 90s Speed + Hover/Button Pause) */}
       <div className="flex-1 overflow-hidden relative flex items-center h-full">
         <div
           className="animate-ticker-marquee flex items-center whitespace-nowrap will-change-transform"
-          style={{ animation: "ticker-marquee 35s linear infinite" }}
+          style={{
+            animation: "ticker-marquee 90s linear infinite",
+            animationPlayState: shouldPause ? "paused" : "running",
+          }}
         >
           {/* First sequence */}
           {tickerItems.map((item, idx) => {
@@ -77,7 +100,7 @@ export function MandiTicker() {
             return (
               <div
                 key={`item-1-${item.id}-${idx}`}
-                className="inline-flex items-center text-[11px] sm:text-[12.5px] font-medium px-3 sm:px-4"
+                className="inline-flex items-center text-[11px] sm:text-[12.5px] font-medium px-3 sm:px-4 cursor-pointer hover:text-emerald-300"
               >
                 <span className="text-gray-300 font-semibold">{item.cropName}</span>
                 <span className="text-gray-500 text-[10px] sm:text-[11px] ml-1">({item.location}):</span>
@@ -108,7 +131,7 @@ export function MandiTicker() {
             return (
               <div
                 key={`item-2-${item.id}-${idx}`}
-                className="inline-flex items-center text-[11px] sm:text-[12.5px] font-medium px-3 sm:px-4"
+                className="inline-flex items-center text-[11px] sm:text-[12.5px] font-medium px-3 sm:px-4 cursor-pointer hover:text-emerald-300"
               >
                 <span className="text-gray-300 font-semibold">{item.cropName}</span>
                 <span className="text-gray-500 text-[10px] sm:text-[11px] ml-1">({item.location}):</span>
