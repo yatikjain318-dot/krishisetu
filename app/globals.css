@@ -24,7 +24,7 @@ body {
 .animate-ticker-marquee {
   display: flex;
   width: max-content;
-  animation: ticker-marquee 75s linear infinite;
+  animation: ticker-marquee 140s linear infinite;
 }
 
 .animate-ticker-marquee:hover {
@@ -33,7 +33,7 @@ body {
 
 @media (max-width: 640px) {
   .animate-ticker-marquee {
-    animation-duration: 60s;
+    animation-duration: 110s;
   }
 }
 
