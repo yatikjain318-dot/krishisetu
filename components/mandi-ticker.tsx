@@ -18,7 +18,7 @@ export function MandiTicker() {
   const tickerItems: TickerItem[] = useMemo(() => {
     const items: TickerItem[] = [];
 
-    // Pre-pended curated high-demand commodities
+    // Curated key commodities
     const curated: TickerItem[] = [
       { id: "c1", cropName: "Wheat (Sharbati Gold)", location: "Karnal APMC", price: 4200, unit: "q", changePercent: 5.2 },
       { id: "c2", cropName: "Mustard (42% Oil)", location: "Alwar APMC", price: 5980, unit: "q", changePercent: 3.1 },
@@ -65,9 +65,12 @@ export function MandiTicker() {
         </span>
       </div>
 
-      {/* 2. Middle Continuous Infinite Auto-Scrolling Marquee */}
+      {/* 2. Middle Continuous Infinite Auto-Scrolling Marquee (35s Speed) */}
       <div className="flex-1 overflow-hidden relative flex items-center h-full">
-        <div className="animate-ticker-marquee flex items-center whitespace-nowrap will-change-transform">
+        <div
+          className="animate-ticker-marquee flex items-center whitespace-nowrap will-change-transform"
+          style={{ animation: "ticker-marquee 35s linear infinite" }}
+        >
           {/* First sequence */}
           {tickerItems.map((item, idx) => {
             const isPositive = item.changePercent >= 0;
