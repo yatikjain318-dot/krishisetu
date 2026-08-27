@@ -22,7 +22,9 @@ export function NegotiationModal({
   onCounter,
   onReject,
 }: NegotiationModalProps) {
-  const { t, playChime } = useI18n();
+  const { t, language, playChime } = useI18n();
+  const isEn = language === "en";
+
   const [counterPrice, setCounterPrice] = useState<number>(offer ? offer.offeredPrice + 50 : 2700);
   const [counterNote, setCounterNote] = useState("");
   const [isCounterMode, setIsCounterMode] = useState(false);
@@ -30,7 +32,7 @@ export function NegotiationModal({
   if (!isOpen || !offer) return null;
 
   const handleSendCounter = () => {
-    onCounter(offer.id, counterPrice, counterNote || "प्रस्तावित संशोधित मूल्य।");
+    onCounter(offer.id, counterPrice, counterNote || (isEn ? "Proposed revised price." : "प्रस्तावित संशोधित मूल्य।"));
     playChime();
     setIsCounterMode(false);
     onClose();
@@ -56,7 +58,8 @@ export function NegotiationModal({
                 {t.digitalOffersTitle}
               </h3>
               <span className="text-xs text-emerald-200">
-                लॉट कोड: <span className="font-mono font-bold text-white">{offer.lotCode}</span>
+                {isEn ? "Lot Code: " : "लॉट कोड: "}
+                <span className="font-mono font-bold text-white">{offer.lotCode}</span>
               </span>
             </div>
           </div>
@@ -80,30 +83,36 @@ export function NegotiationModal({
                 </span>
               </div>
               <div className="text-xs text-gray-600 mt-1">
-                ⭐ {offer.buyerRating} / 5.0 • 100% एस्क्रो भुगतान रिकॉर्ड
+                ⭐ {offer.buyerRating} / 5.0 • {isEn ? "100% Escrow Payout Record" : "100% एस्क्रो भुगतान रिकॉर्ड"}
               </div>
             </div>
             <div className="text-right">
-              <span className="text-xs text-gray-500 font-bold block">प्रस्तावित भाव:</span>
+              <span className="text-xs text-gray-500 font-bold block">{isEn ? "Offered Price:" : "प्रस्तावित भाव:"}</span>
               <span className="text-xl font-black text-emerald-700">₹{offer.offeredPrice}</span>
-              <span className="text-[11px] text-gray-500 font-medium block">/ क्विंटल</span>
+              <span className="text-[11px] text-gray-500 font-medium block">/ quintal</span>
             </div>
           </div>
 
           {/* Offer Key Details */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
             <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
-              <span className="text-emerald-800 font-bold block">मात्रा (Quantity):</span>
-              <span className="text-base font-extrabold text-emerald-950">{offer.quantityQtl} क्विंटल</span>
+              <span className="text-emerald-800 font-bold block">{isEn ? "Quantity:" : "मात्रा (Quantity):"}</span>
+              <span className="text-base font-extrabold text-emerald-950">{offer.quantityQtl} {isEn ? "Quintals" : "क्विंटल"}</span>
             </div>
             <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
-              <span className="text-emerald-800 font-bold block">कुल मूल्य (Total):</span>
+              <span className="text-emerald-800 font-bold block">{isEn ? "Total Amount:" : "कुल मूल्य (Total):"}</span>
               <span className="text-base font-extrabold text-emerald-950">₹{offer.totalValue.toLocaleString("en-IN")}</span>
             </div>
             <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 col-span-2 sm:col-span-1">
-              <span className="text-emerald-800 font-bold block">उठाव / डिलीवरी:</span>
+              <span className="text-emerald-800 font-bold block">{isEn ? "Logistics:" : "उठाव / डिलीवरी:"}</span>
               <span className="text-sm font-extrabold text-emerald-950">
-                {offer.pickupOrDelivery === "FARM_PICKUP" ? "🚜 खेत से उठाव (Farm Pickup)" : "🚚 मंडी डिलीवरी"}
+                {offer.pickupOrDelivery === "FARM_PICKUP"
+                  ? isEn
+                    ? "🚜 Farm Gate Pickup"
+                    : "🚜 खेत से उठाव (Farm Pickup)"
+                  : isEn
+                  ? "🚚 Mandi Delivery"
+                  : "🚚 मंडी डिलीवरी"}
               </span>
             </div>
           </div>
@@ -112,7 +121,7 @@ export function NegotiationModal({
           <div className="bg-blue-50 border border-blue-200 p-3.5 rounded-2xl flex items-center gap-3">
             <ShieldCheck className="w-6 h-6 text-blue-600 shrink-0" />
             <div className="text-xs text-blue-950">
-              <span className="font-bold block">भुगतान शर्तें (Payment Terms):</span>
+              <span className="font-bold block">{isEn ? "Payment Terms:" : "भुगतान शर्तें (Payment Terms):"}</span>
               {offer.paymentTerms}
             </div>
           </div>
@@ -120,7 +129,7 @@ export function NegotiationModal({
           {/* Negotiation Trail / History */}
           <div>
             <span className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-2">
-              📜 बातचीत व मोलभाव का इतिहास:
+              📜 {isEn ? "Negotiation Trail & Messages:" : "बातचीत व मोलभाव का इतिहास:"}
             </span>
             <div className="space-y-2 border border-gray-200 rounded-2xl p-3 bg-gray-50 max-h-40 overflow-y-auto">
               {offer.negotiationHistory.map((h, i) => (
@@ -133,7 +142,7 @@ export function NegotiationModal({
                   }`}
                 >
                   <div className="flex items-center justify-between font-bold mb-1">
-                    <span>{h.sender === "BUYER" ? `🏭 ${offer.buyerName}` : "👨🌾 आप (किसान)"}</span>
+                    <span>{h.sender === "BUYER" ? `🏭 ${offer.buyerName}` : isEn ? "👨🌾 You (Seller)" : "👨🌾 आप (किसान)"}</span>
                     <span className="text-emerald-700 font-extrabold">₹{h.price}/qtl</span>
                   </div>
                   <p className="text-gray-600">{h.note}</p>
@@ -148,12 +157,12 @@ export function NegotiationModal({
             <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-400 space-y-3 animate-in fade-in duration-150">
               <h5 className="text-xs font-extrabold text-amber-950 uppercase tracking-wider flex items-center gap-1.5">
                 <MessageSquare className="w-4 h-4 text-amber-600" />
-                काउंटर ऑफर दर्ज करें (Counter Offer)
+                {isEn ? "Submit Counter Offer" : "काउंटर ऑफर दर्ज करें"}
               </h5>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold text-gray-700 block mb-1">
-                    आपका काउंटर भाव (₹/क्विंटल):
+                    {isEn ? "Your Counter Price (₹/qtl):" : "आपका काउंटर भाव (₹/क्विंटल):"}
                   </label>
                   <input
                     type="number"
@@ -164,11 +173,11 @@ export function NegotiationModal({
                 </div>
                 <div>
                   <label className="text-xs font-bold text-gray-700 block mb-1">
-                    संदेश / टिप्पणी:
+                    {isEn ? "Message / Note:" : "संदेश / टिप्पणी:"}
                   </label>
                   <input
                     type="text"
-                    placeholder="उदा. खेत से उठाव आवश्यक है"
+                    placeholder={isEn ? "e.g. Farm gate pickup required" : "उदा. खेत से उठाव आवश्यक है"}
                     value={counterNote}
                     onChange={(e) => setCounterNote(e.target.value)}
                     className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -180,13 +189,13 @@ export function NegotiationModal({
                   onClick={() => setIsCounterMode(false)}
                   className="px-3 py-1.5 text-xs font-bold text-gray-600 hover:text-gray-900"
                 >
-                  रद्द करें
+                  {isEn ? "Cancel" : "रद्द करें"}
                 </button>
                 <button
                   onClick={handleSendCounter}
                   className="px-4 py-1.5 bg-amber-500 hover:bg-amber-600 text-amber-950 font-black text-xs rounded-xl shadow-xs cursor-pointer flex items-center gap-1"
                 >
-                  <Send className="w-3.5 h-3.5" /> काउंटर ऑफर भेजें
+                  <Send className="w-3.5 h-3.5" /> {isEn ? "Send Counter Offer" : "काउंटर ऑफर भेजें"}
                 </button>
               </div>
             </div>
@@ -199,7 +208,7 @@ export function NegotiationModal({
             onClick={() => onReject(offer.id)}
             className="px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition cursor-pointer"
           >
-            अस्वीकार करें (Reject)
+            {isEn ? "Reject Offer" : "अस्वीकार करें (Reject)"}
           </button>
 
           <div className="flex items-center gap-2">
@@ -209,7 +218,7 @@ export function NegotiationModal({
                 className="px-4 py-2 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300 font-bold text-xs rounded-xl transition cursor-pointer flex items-center gap-1.5"
               >
                 <MessageSquare className="w-3.5 h-3.5 text-amber-600" />
-                मोलभाव / काउंटर ऑफर दें
+                {isEn ? "Negotiate / Counter" : "मोलभाव / काउंटर ऑफर दें"}
               </button>
             )}
 
@@ -218,7 +227,7 @@ export function NegotiationModal({
               className="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-xs rounded-xl shadow-md transition cursor-pointer flex items-center gap-1.5"
             >
               <Check className="w-4 h-4" />
-              सौदा स्वीकार करें (Accept ₹{offer.offeredPrice}/qtl)
+              {isEn ? `Accept Deal (₹${offer.offeredPrice}/qtl)` : `सौदा स्वीकार करें (Accept ₹${offer.offeredPrice}/qtl)`}
             </button>
           </div>
         </div>

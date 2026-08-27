@@ -7,7 +7,8 @@ import { Warehouse, Calculator, Sparkles, TrendingUp, DollarSign, ShieldCheck, A
 import Link from "next/link";
 
 export function SellVsStoreCalculator() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const isEn = language === "en";
 
   const [selectedCropId, setSelectedCropId] = useState("mustard");
   const [quantityQtl, setQuantityQtl] = useState(50); // 50 qtl = 100 bags (50kg each)
@@ -57,7 +58,9 @@ export function SellVsStoreCalculator() {
               </span>
             </div>
             <p className="text-xs text-gray-600">
-              आज तुरंत बेचें या मान्यता प्राप्त गोदाम में रखकर आगामी मांग पर बेचें?
+              {isEn
+                ? "Sell immediately vs store in scientific warehouse for future demand?"
+                : "आज तुरंत बेचें या मान्यता प्राप्त गोदाम में रखकर आगामी मांग पर बेचें?"}
             </p>
           </div>
         </div>
@@ -68,7 +71,7 @@ export function SellVsStoreCalculator() {
             className="text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-xl transition flex items-center gap-1"
           >
             <Warehouse className="w-3.5 h-3.5" />
-            निकटवर्ती गोदाम देखें
+            {isEn ? "View Nearby Warehouses" : "निकटवर्ती गोदाम देखें"}
           </Link>
         </div>
       </div>
@@ -77,7 +80,7 @@ export function SellVsStoreCalculator() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-200">
         <div>
           <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1">
-            🌾 फसल चुनें:
+            🌾 {isEn ? "Select Commodity:" : "फसल चुनें:"}
           </label>
           <select
             value={selectedCropId}
@@ -93,7 +96,7 @@ export function SellVsStoreCalculator() {
           >
             {CROPS_INTELLIGENCE.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.nameHi}
+                {isEn ? c.name : c.nameHi}
               </option>
             ))}
           </select>
@@ -101,217 +104,139 @@ export function SellVsStoreCalculator() {
 
         <div>
           <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1">
-            ⚖️ मात्रा (क्विंटल):
+            ⚖️ {isEn ? "Quantity (Quintals):" : "मात्रा (क्विंटल):"}
           </label>
-          <input
-            type="number"
-            min={10}
-            max={2000}
-            value={quantityQtl}
-            onChange={(e) => setQuantityQtl(Number(e.target.value) || 1)}
-            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-bold text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-          />
-          <span className="text-[11px] text-gray-500 mt-0.5 block font-medium">
-            = {bagsCount} मानक बोरियां (50 kg)
-          </span>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min={5}
+              max={500}
+              value={quantityQtl}
+              onChange={(e) => setQuantityQtl(Number(e.target.value))}
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-black text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            />
+            <span className="text-xs text-gray-500 font-semibold shrink-0">
+              ({bagsCount} {isEn ? "bags" : "बोरियां"})
+            </span>
+          </div>
         </div>
 
         <div>
           <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1">
-            💰 आज का मंडी भाव (₹/qtl):
-          </label>
-          <input
-            type="number"
-            min={500}
-            max={50000}
-            value={currentPrice}
-            onChange={(e) => setCurrentPrice(Number(e.target.value) || 1)}
-            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-bold text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1">
-            ⏱️ स्टोरेज अवधि:
+            📅 {isEn ? "Storage Duration:" : "भंडारण अवधि:"}
           </label>
           <select
             value={storageMonths}
             onChange={(e) => setStorageMonths(Number(e.target.value))}
             className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-bold text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
           >
-            <option value={1}>1 माह (30 दिन)</option>
-            <option value={2}>2 माह (60 दिन) - अनुशंसित</option>
-            <option value={3}>3 माह (90 दिन)</option>
-            <option value={4}>4 माह (120 दिन)</option>
-            <option value={6}>6 माह (180 दिन)</option>
+            <option value={1}>1 {isEn ? "Month" : "माह"}</option>
+            <option value={2}>2 {isEn ? "Months (Recommended)" : "माह (अनुशंसित)"}</option>
+            <option value={3}>3 {isEn ? "Months" : "माह"}</option>
+            <option value={6}>6 {isEn ? "Months" : "माह"}</option>
           </select>
         </div>
-      </div>
 
-      {/* Advanced Slider: Projected Off-Season Rise */}
-      <div className="bg-purple-50/70 p-4 rounded-2xl border border-purple-200">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-purple-700" />
-            <span className="text-xs font-extrabold text-purple-950 uppercase tracking-wider">
-              AI अनुमानित आगामी भाव वृद्धि (%):
-            </span>
-          </div>
-          <span className="text-sm font-black text-purple-900 bg-purple-200 px-3 py-0.5 rounded-full">
-            +{projectedPriceRisePercent}% वृद्धि (₹{futurePricePerQtl}/क्विंटल)
-          </span>
-        </div>
-        <input
-          type="range"
-          min={2}
-          max={35}
-          value={projectedPriceRisePercent}
-          onChange={(e) => setProjectedPriceRisePercent(Number(e.target.value))}
-          className="w-full accent-purple-600 cursor-pointer"
-        />
-
-        {/* e-NWR Pledge Loan Toggle */}
-        <div className="mt-3 pt-3 border-t border-purple-200/60 flex items-center justify-between">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={takePledgeLoan}
-              onChange={(e) => setTakePledgeLoan(e.target.checked)}
-              className="w-4 h-4 accent-purple-600 rounded"
-            />
-            <span className="text-xs font-bold text-purple-950">
-              e-NWR रसीद पर 75% तत्काल बैंक ऋण लें (ब्याज 7% p.a.)
-            </span>
+        <div>
+          <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1">
+            📈 {isEn ? "Expected Price Surge:" : "अपेक्षित मूल्य वृद्धि (%):"}
           </label>
-          {takePledgeLoan && (
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
-              तत्काल प्राप्त ऋण राशि: ₹{pledgeLoanAmount.toLocaleString("en-IN")}
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min={1}
+              max={50}
+              value={projectedPriceRisePercent}
+              onChange={(e) => setProjectedPriceRisePercent(Number(e.target.value))}
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-black text-emerald-700 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            />
+            <span className="text-xs text-emerald-700 font-bold">%</span>
+          </div>
         </div>
       </div>
 
-      {/* Comparison Result Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Option A: Sell Today */}
-        <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col justify-between">
-          <div>
-            <div className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-1">
-              विकल्प A: आज ही तुरंत बेचना
-            </div>
-            <h4 className="text-lg font-black text-gray-900">
-              तत्काल विक्रय प्राप्ति (Spot Sale)
-            </h4>
-            <div className="mt-4 space-y-2 text-xs text-gray-600">
-              <div className="flex justify-between">
-                <span>विक्रय मात्रा:</span>
-                <span className="font-bold text-gray-900">{quantityQtl} क्विंटल</span>
-              </div>
-              <div className="flex justify-between">
-                <span>वर्तमान मॉडल भाव:</span>
-                <span className="font-bold text-gray-900">₹{currentPrice}/qtl</span>
-              </div>
-              <div className="flex justify-between">
-                <span>स्टोरेज व ब्याज खर्च:</span>
-                <span className="font-bold text-emerald-700">₹0</span>
-              </div>
-            </div>
+      {/* Comparison ROI Output Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Scenario A: Sell Today */}
+        <div className="bg-gray-50 rounded-3xl p-5 border border-gray-200 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-gray-500">
+              {isEn ? "Option A: Sell Immediately Today" : "विकल्प A: आज तुरंत बेचें"}
+            </span>
+            <span className="text-xs bg-gray-200 text-gray-800 font-bold px-2 py-0.5 rounded">
+              {isEn ? "Instant Cash" : "तत्काल नकदी"}
+            </span>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <span className="text-xs text-gray-500 font-bold block">कुल तत्काल प्राप्ति:</span>
-            <div className="text-2xl font-black text-gray-900">
-              ₹{immediateGrossIncome.toLocaleString("en-IN")}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs text-gray-600">
+              <span>{isEn ? "Today's Mandi Price:" : "वर्तमान मंडी भाव:"}</span>
+              <span className="font-bold text-gray-900">₹{currentPrice}/qtl</span>
+            </div>
+            <div className="flex justify-between text-xs text-gray-600">
+              <span>{isEn ? "Total Harvest Volume:" : "कुल बेची गई मात्रा:"}</span>
+              <span className="font-bold text-gray-900">{quantityQtl} {isEn ? "Qtl" : "क्विंटल"}</span>
+            </div>
+            <div className="pt-2 border-t border-gray-200 flex justify-between items-center">
+              <span className="text-xs font-bold text-gray-800">{isEn ? "Total Realization:" : "कुल प्राप्त राशि:"}</span>
+              <span className="text-2xl font-black text-gray-900 font-mono">
+                ₹{immediateGrossIncome.toLocaleString("en-IN")}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Option B: Store & Sell Later */}
-        <div className={`p-5 rounded-2xl border-2 flex flex-col justify-between relative ${
+        {/* Scenario B: Store and Sell Later */}
+        <div className={`rounded-3xl p-5 border-2 space-y-4 ${
           isProfitable
-            ? "bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-500 shadow-md"
-            : "bg-rose-50 border-rose-300"
+            ? "bg-gradient-to-br from-purple-50 to-emerald-50 border-emerald-400 shadow-md"
+            : "bg-amber-50 border-amber-300"
         }`}>
-          {isProfitable && (
-            <span className="absolute -top-3 right-4 bg-emerald-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-xs flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-amber-300" />
-              सर्वाधिक अनुशंसित (+₹{netAddedProfit.toLocaleString("en-IN")})
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-purple-900 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+              {isEn ? `Option B: Store for ${storageMonths} Months` : `विकल्प B: ${storageMonths} माह गोदाम में रखें`}
             </span>
-          )}
-
-          <div>
-            <div className="text-xs font-extrabold text-emerald-800 uppercase tracking-wider mb-1">
-              विकल्प B: {storageMonths} माह स्टोर कर बेचना
-            </div>
-            <h4 className="text-lg font-black text-emerald-950">
-              वैज्ञानिक भंडारण + आगामी विक्रय
-            </h4>
-
-            <div className="mt-4 space-y-2 text-xs">
-              <div className="flex justify-between">
-                <span className="text-gray-600">अनुमानित भावी भाव:</span>
-                <span className="font-black text-emerald-800">₹{futurePricePerQtl}/qtl (+{projectedPriceRisePercent}%)</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">भावी सकल आय:</span>
-                <span className="font-bold text-gray-900">₹{futureGrossIncome.toLocaleString("en-IN")}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">कुल स्टोरेज शुल्क ({storageMonths} माह):</span>
-                <span className="font-bold text-rose-600">- ₹{totalStorageFee.toLocaleString("en-IN")}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">हैंडलिंग व बीमा:</span>
-                <span className="font-bold text-rose-600">- ₹{handlingAndInsurance.toLocaleString("en-IN")}</span>
-              </div>
-              {takePledgeLoan && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">ऋण ब्याज (7% p.a.):</span>
-                  <span className="font-bold text-rose-600">- ₹{Math.round(interestCost).toLocaleString("en-IN")}</span>
-                </div>
-              )}
-            </div>
+            <span className="text-xs bg-emerald-600 text-white font-black px-2.5 py-0.5 rounded-full">
+              {isEn ? "+ Higher ROI" : "+ अधिक मुनाफा"}
+            </span>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-emerald-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-xs text-emerald-800 font-bold block">खर्च काटकर शुद्ध प्राप्ति:</span>
-                <div className="text-2xl font-black text-emerald-900">
-                  ₹{Math.round(netIncomeAfterStorage).toLocaleString("en-IN")}
-                </div>
+          <div className="space-y-1.5 text-xs text-gray-700">
+            <div className="flex justify-between">
+              <span>{isEn ? `Future Projected Price (+${projectedPriceRisePercent}%):` : `अनुमानित भाव (+${projectedPriceRisePercent}%):`}</span>
+              <span className="font-black text-emerald-700">₹{futurePricePerQtl}/qtl</span>
+            </div>
+            <div className="flex justify-between">
+              <span>{isEn ? "Gross Future Value:" : "कुल भविष्य मूल्य:"}</span>
+              <span className="font-mono font-bold text-gray-900">₹{futureGrossIncome.toLocaleString("en-IN")}</span>
+            </div>
+            <div className="flex justify-between text-rose-600">
+              <span>{isEn ? "Storage & Insurance Cost:" : "गोदाम किराया व बीमा खर्च:"}</span>
+              <span className="font-mono">- ₹{totalStorageFee + handlingAndInsurance}</span>
+            </div>
+            {takePledgeLoan && (
+              <div className="flex justify-between text-purple-900">
+                <span>{isEn ? "75% e-NWR Loan Advance:" : "75% e-NWR बैंक लोन (अग्रिम नकदी):"}</span>
+                <span className="font-mono font-bold text-purple-700">+ ₹{pledgeLoanAmount.toLocaleString("en-IN")}</span>
               </div>
-              <div className="text-right">
-                <span className="text-[11px] font-extrabold text-emerald-700 block">शुद्ध अतिरिक्त लाभ:</span>
-                <span className="text-lg font-black text-emerald-700 bg-emerald-200/80 px-2.5 py-1 rounded-xl">
-                  + ₹{netGainPerQtl} / qtl
+            )}
+
+            <div className="pt-2 border-t border-purple-200 flex justify-between items-center">
+              <div>
+                <span className="text-xs font-black text-emerald-950 block">
+                  {isEn ? "Net Extra Profit (अतिरिक्त शुद्ध मुनाफा):" : "शुद्ध अतिरिक्त मुनाफा:"}
+                </span>
+                <span className="text-[11px] text-emerald-700 font-bold">
+                  (+₹{netGainPerQtl}/qtl {isEn ? "extra" : "अधिक"})
                 </span>
               </div>
+              <span className="text-2xl font-black text-emerald-700 font-mono">
+                + ₹{netAddedProfit.toLocaleString("en-IN")}
+              </span>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Action Recommendation */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <CheckCircle2 className="w-8 h-8 text-amber-300 shrink-0" />
-          <div className="text-xs sm:text-sm">
-            <span className="font-bold text-amber-300 block">
-              💡 कृषि सेतु AI निष्कर्ष: {crop.nameHi} को {storageMonths} माह स्टोर करने पर प्रति क्विंटल ₹{netGainPerQtl} अधिक मिलेगा!
-            </span>
-            <span className="text-emerald-100">
-              e-NWR रसीद द्वारा आप तत्काल ₹{pledgeLoanAmount.toLocaleString("en-IN")} का 75% बैंक लोन प्राप्त कर अपनी नकदी जरूरत भी पूरी कर सकते हैं।
-            </span>
-          </div>
-        </div>
-
-        <Link
-          href="/storage"
-          className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs rounded-xl transition shadow-md shrink-0 flex items-center gap-1.5"
-        >
-          गोदाम में स्पेस बुक करें <ArrowRight className="w-4 h-4" />
-        </Link>
       </div>
     </div>
   );

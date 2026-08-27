@@ -14,20 +14,30 @@ interface VoiceMarketQueryModalProps {
 }
 
 export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMarketQueryModalProps) {
-  const { t, currentLanguage, playChime } = useI18n();
+  const { t, language, currentLanguage, playChime } = useI18n();
+  const isEn = language === "en";
+
   const [isListening, setIsListening] = useState(false);
   const [spokenText, setSpokenText] = useState(initialQuery || "");
   const [parsedResult, setParsedResult] = useState<ParsedVoiceQuery | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speechStopper, setSpeechStopper] = useState<{ stop: () => void } | null>(null);
 
-  const sampleVoicePrompts = [
-    { text: "मेरे गेहूं का आज का भाव क्या है?", crop: "wheat" },
-    { text: "सरसों के लिए सबसे अच्छा खरीदार कौन है?", crop: "mustard" },
-    { text: "अगर मैं सोयाबीन 15 दिन स्टोर करूं तो क्या फायदा होगा?", crop: "soybean" },
-    { text: "आज चना किस मंडी में सबसे तेज बिक रहा है?", crop: "chana" },
-    { text: "प्याज का आज आजादपुर मंडी में क्या भाव है?", crop: "onion" },
-  ];
+  const sampleVoicePrompts = isEn
+    ? [
+        { text: "What is today's modal price for Wheat?", crop: "wheat" },
+        { text: "Who is the top verified buyer for Mustard?", crop: "mustard" },
+        { text: "What is the profit if I store Soybean for 15 days?", crop: "soybean" },
+        { text: "Which mandi offers the highest rate for Chana?", crop: "chana" },
+        { text: "What is the current price of Red Onion?", crop: "onion" },
+      ]
+    : [
+        { text: "मेरे गेहूं का आज का भाव क्या है?", crop: "wheat" },
+        { text: "सरसों के लिए सबसे अच्छा खरीदार कौन है?", crop: "mustard" },
+        { text: "अगर मैं सोयाबीन 15 दिन स्टोर करूं तो क्या फायदा होगा?", crop: "soybean" },
+        { text: "आज चना किस मंडी में सबसे तेज बिक रहा है?", crop: "chana" },
+        { text: "प्याज का आज आजादपुर मंडी में क्या भाव है?", crop: "onion" },
+      ];
 
   useEffect(() => {
     if (isOpen && initialQuery) {
@@ -69,13 +79,14 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
     if (recognition) {
       setSpeechStopper(recognition);
     } else {
-      // Fallback simulation for browsers/devices without mic permission
       setTimeout(() => {
-        const simulated = "मेरे गेहूं का आज का भाव क्या है?";
+        const simulated = isEn
+          ? "What is today's modal price for Wheat?"
+          : "मेरे गेहूं का आज का भाव क्या है?";
         setSpokenText(simulated);
         handleProcessQuery(simulated);
         setIsListening(false);
-      }, 1800);
+      }, 1500);
     }
   };
 
@@ -90,18 +101,27 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
     const parsed = parseFarmerVoiceQuery(text);
     setParsedResult(parsed);
 
-    // Formulate intelligent vocal response in active language
     let responseSpeech = "";
     const cropId = parsed.cropId || "wheat";
     const cropMeta = CROPS_INTELLIGENCE.find((c) => c.id === cropId) || CROPS_INTELLIGENCE[0];
     const topMandiPrice = MANDIS_DATA[0].cropPrices.find((p) => p.cropId === cropId)?.modalPrice || cropMeta.currentAvgModal;
 
-    if (parsed.intent === "storage_query") {
-      responseSpeech = `कृषि सेतु AI विश्लेषण के अनुसार ${cropMeta.nameHi} को वैज्ञानिक गोदाम में रखने से आगामी त्योहारी मांग के चलते प्रति क्विंटल ₹200 से ₹300 तक अतिरिक्त लाभ हो सकता है।`;
-    } else if (parsed.intent === "buyer_query") {
-      responseSpeech = `आपके निकटतम क्षेत्र में ${cropMeta.nameHi} के लिए ITC एवं रिलायंस जैसे सत्यापित खरीदार ₹${topMandiPrice + 70} प्रति क्विंटल की दर से 24 घंटे में एस्क्रो भुगतान का प्रस्ताव दे रहे हैं।`;
+    if (isEn) {
+      if (parsed.intent === "storage_query") {
+        responseSpeech = `According to KrishiSetu AI intelligence, storing ${cropMeta.name} in WDRA silos can yield an extra ₹200 to ₹300 per quintal due to expected demand.`;
+      } else if (parsed.intent === "buyer_query") {
+        responseSpeech = `Top buyers like ITC and Reliance are offering ₹${topMandiPrice + 70} per quintal with 24-hour escrow DBT payout for ${cropMeta.name}.`;
+      } else {
+        responseSpeech = `Today's average modal price for ${cropMeta.name} is ₹${topMandiPrice} per quintal. AI recommends: ${cropMeta.aiRecommendation.action.replace(/_/g, " ")}.`;
+      }
     } else {
-      responseSpeech = `आज ${cropMeta.nameHi} का औसत मॉडल भाव ₹${topMandiPrice} प्रति क्विंटल है। AI का अनुमान है: ${cropMeta.aiRecommendation.reasonHi}`;
+      if (parsed.intent === "storage_query") {
+        responseSpeech = `कृषि सेतु AI विश्लेषण के अनुसार ${cropMeta.nameHi} को वैज्ञानिक गोदाम में रखने से आगामी त्योहारी मांग के चलते प्रति क्विंटल ₹200 से ₹300 तक अतिरिक्त लाभ हो सकता है।`;
+      } else if (parsed.intent === "buyer_query") {
+        responseSpeech = `आपके निकटतम क्षेत्र में ${cropMeta.nameHi} के लिए ITC एवं रिलायंस जैसे सत्यापित खरीदार ₹${topMandiPrice + 70} प्रति क्विंटल की दर से 24 घंटे में एस्क्रो भुगतान का प्रस्ताव दे रहे हैं।`;
+      } else {
+        responseSpeech = `आज ${cropMeta.nameHi} का औसत मॉडल भाव ₹${topMandiPrice} प्रति क्विंटल है। AI का अनुमान है: ${cropMeta.aiRecommendation.reasonHi}`;
+      }
     }
 
     // Auto-speak response
@@ -119,7 +139,9 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
       const cropId = parsedResult.cropId || "wheat";
       const cropMeta = CROPS_INTELLIGENCE.find((c) => c.id === cropId) || CROPS_INTELLIGENCE[0];
       const topMandiPrice = MANDIS_DATA[0].cropPrices.find((p) => p.cropId === cropId)?.modalPrice || cropMeta.currentAvgModal;
-      const speech = `आज ${cropMeta.nameHi} का भाव ₹${topMandiPrice} प्रति क्विंटल है। AI सलाह: ${cropMeta.aiRecommendation.reasonHi}`;
+      const speech = isEn
+        ? `Today's modal price for ${cropMeta.name} is ₹${topMandiPrice} per quintal.`
+        : `आज ${cropMeta.nameHi} का भाव ₹${topMandiPrice} प्रति क्विंटल है।`;
       speakText(speech, currentLanguage.bcp47);
       setIsSpeaking(true);
     }
@@ -144,7 +166,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
               <h3 className="font-extrabold text-lg sm:text-xl flex items-center gap-2">
                 {t.aiAssistantTitle}
                 <span className="text-xs bg-emerald-500/40 text-emerald-100 px-2 py-0.5 rounded-full border border-emerald-400/30">
-                  {currentLanguage.nativeName}
+                  {currentLanguage.name}
                 </span>
               </h3>
               <p className="text-xs text-emerald-200">{t.voiceAssistantSubtitle}</p>
@@ -187,10 +209,16 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
 
             <div className="mt-3">
               <span className={`text-sm font-bold ${isListening ? "text-rose-600 animate-pulse" : "text-emerald-900"}`}>
-                {isListening ? "🎙️ सुन रहे हैं... कृपया अपनी भाषा में बोलिए" : "माइक दबाएं और अपनी फसल का भाव पूछें"}
+                {isListening
+                  ? isEn
+                    ? "🎙️ Listening... Please speak your query"
+                    : "🎙️ सुन रहे हैं... कृपया अपनी भाषा में बोलिए"
+                  : isEn
+                  ? "Tap the microphone and ask your crop query"
+                  : "माइक दबाएं और अपनी फसल का भाव पूछें"}
               </span>
               <p className="text-xs text-gray-500 mt-0.5">
-                (उदाहरण: &ldquo;मेरे गेहूं का आज का भाव क्या है?&rdquo;)
+                {isEn ? "(e.g. 'What is the price of Wheat today?')" : "(उदाहरण: 'मेरे गेहूं का आज का भाव क्या है?')"}
               </p>
             </div>
           </div>
@@ -200,7 +228,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
             <div className="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 flex items-start justify-between gap-3">
               <div>
                 <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block mb-1">
-                  🗣️ आपका सवाल / Spoken Query:
+                  🗣️ {isEn ? "Your Voice Query:" : "आपका सवाल:"}
                 </span>
                 <p className="text-base font-bold text-emerald-950">&ldquo;{spokenText}&rdquo;</p>
                 {parsedResult?.cropName && (
@@ -228,7 +256,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
           {/* Quick Voice Query Chips */}
           <div>
             <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
-              ⚡ सीधे क्लिक करके भी पूछ सकते हैं:
+              ⚡ {isEn ? "Or click a quick prompt to ask:" : "सीधे क्लिक करके भी पूछ सकते हैं:"}
             </span>
             <div className="flex flex-wrap gap-2">
               {sampleVoicePrompts.map((p, idx) => (
@@ -254,7 +282,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <span className="text-xs uppercase tracking-wider font-extrabold text-emerald-300 flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-amber-400" />
-                    AI मूल्य सलाह (Recommendation)
+                    {isEn ? "AI Price Recommendation" : "AI मूल्य सलाह"}
                   </span>
                   <span className="bg-amber-400 text-amber-950 text-xs font-black px-2.5 py-1 rounded-full">
                     {activeCrop.aiRecommendation.action.replace(/_/g, " ")}
@@ -262,20 +290,20 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                 </div>
 
                 <p className="text-sm font-medium leading-relaxed text-emerald-50 mb-3">
-                  {activeCrop.aiRecommendation.reasonHi}
+                  {isEn ? activeCrop.aiRecommendation.reasonEn : activeCrop.aiRecommendation.reasonHi}
                 </p>
 
                 <div className="grid grid-cols-3 gap-2 pt-3 border-t border-emerald-700/50 text-center text-xs">
                   <div className="bg-white/10 p-2 rounded-xl">
-                    <div className="text-emerald-300 font-semibold">आज का औसत</div>
+                    <div className="text-emerald-300 font-semibold">{isEn ? "Today's Avg" : "आज का औसत"}</div>
                     <div className="text-base font-black text-white">₹{activeCrop.currentAvgModal}</div>
                   </div>
                   <div className="bg-white/10 p-2 rounded-xl">
-                    <div className="text-emerald-300 font-semibold">7-दिन अनुमान</div>
+                    <div className="text-emerald-300 font-semibold">{isEn ? "7-Day Forecast" : "7-दिन अनुमान"}</div>
                     <div className="text-base font-black text-amber-300">₹{activeCrop.aiRecommendation.targetPriceProjection}</div>
                   </div>
                   <div className="bg-white/10 p-2 rounded-xl">
-                    <div className="text-emerald-300 font-semibold">सरकारी MSP</div>
+                    <div className="text-emerald-300 font-semibold">{isEn ? "Govt MSP" : "सरकारी MSP"}</div>
                     <div className="text-base font-black text-white">₹{activeCrop.msp}</div>
                   </div>
                 </div>
@@ -286,14 +314,16 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
                     <Store className="w-4 h-4 text-emerald-600" />
-                    निकटवर्ती मंडियों में आज का भाव ({activeCrop.nameHi})
+                    {isEn
+                      ? `Today's Prices in Nearby Mandis (${activeCrop.name})`
+                      : `निकटवर्ती मंडियों में आज का भाव (${activeCrop.nameHi})`}
                   </h4>
                   <Link
                     href="/prices"
                     onClick={onClose}
                     className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1"
                   >
-                    विस्तार से देखें <ArrowRight className="w-3 h-3" />
+                    {isEn ? "View Details" : "विस्तार से देखें"} <ArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
 
@@ -306,9 +336,11 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                         className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 hover:bg-emerald-50 border border-gray-100 transition"
                       >
                         <div>
-                          <div className="font-bold text-sm text-gray-900">{mandi.nameHi}</div>
+                          <div className="font-bold text-sm text-gray-900">
+                            {isEn ? mandi.name : mandi.nameHi}
+                          </div>
                           <div className="text-xs text-gray-500">
-                            दूरी: {mandi.distanceKm} किमी • आवक: {priceObj.arrivalTodayQtl} क्विंटल
+                            {isEn ? `Distance: ${mandi.distanceKm} km • Arrival: ${priceObj.arrivalTodayQtl} qtl` : `दूरी: ${mandi.distanceKm} किमी • आवक: ${priceObj.arrivalTodayQtl} क्विंटल`}
                           </div>
                         </div>
                         <div className="text-right">
@@ -329,14 +361,14 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-sm font-bold text-amber-950 flex items-center gap-1.5">
                       <ShieldCheck className="w-4 h-4 text-amber-600" />
-                      उपलब्ध सत्यापित खरीदार (Verified Buyers)
+                      {isEn ? "Matching Verified Buyers" : "उपलब्ध सत्यापित खरीदार"}
                     </h4>
                     <Link
                       href="/buyers"
                       onClick={onClose}
                       className="text-xs font-bold text-amber-800 hover:underline"
                     >
-                      सभी खरीदार देखें
+                      {isEn ? "All Buyers" : "सभी खरीदार देखें"}
                     </Link>
                   </div>
                   <div className="space-y-2">
@@ -353,7 +385,8 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                             </span>
                           </div>
                           <div className="text-xs text-gray-600 mt-0.5">
-                            प्रस्तावित भाव: <span className="font-bold text-emerald-700">{buyer.offeredPriceRange}</span> • {buyer.paymentTermsHi}
+                            {isEn ? `Offered: ` : `प्रस्तावित भाव: `}
+                            <span className="font-bold text-emerald-700">{buyer.offeredPriceRange}</span> • {isEn ? buyer.paymentTerms : buyer.paymentTermsHi}
                           </div>
                         </div>
                         <Link
@@ -361,7 +394,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
                           onClick={onClose}
                           className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition shrink-0"
                         >
-                          सौदा करें
+                          {isEn ? "Connect" : "सौदा करें"}
                         </Link>
                       </div>
                     ))}
@@ -381,7 +414,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
             }}
             className="text-xs font-bold text-gray-600 hover:text-gray-900 px-4 py-2 rounded-xl hover:bg-gray-200 transition cursor-pointer"
           >
-            बंद करें (Close)
+            {isEn ? "Close" : "बंद करें"}
           </button>
           <div className="flex items-center gap-2">
             <Link
@@ -389,7 +422,7 @@ export function VoiceMarketQueryModal({ isOpen, onClose, initialQuery }: VoiceMa
               onClick={onClose}
               className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-xs"
             >
-              सम्पूर्ण मंडी रिपोर्ट देखें
+              {isEn ? "View Complete Mandi Board" : "सम्पूर्ण मंडी रिपोर्ट देखें"}
             </Link>
           </div>
         </div>

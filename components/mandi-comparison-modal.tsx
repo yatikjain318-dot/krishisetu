@@ -9,11 +9,19 @@ interface MandiComparisonModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultCropId?: string;
+  selectedCrop?: string;
 }
 
-export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" }: MandiComparisonModalProps) {
-  const { t } = useI18n();
-  const [selectedCropId, setSelectedCropId] = useState(defaultCropId);
+export function MandiComparisonModal({
+  isOpen,
+  onClose,
+  defaultCropId = "wheat",
+  selectedCrop,
+}: MandiComparisonModalProps) {
+  const { t, language } = useI18n();
+  const isEn = language === "en";
+
+  const [selectedCropId, setSelectedCropId] = useState(selectedCrop || defaultCropId);
   const [quantityQtl, setQuantityQtl] = useState(40);
   const [selectedMandiIds, setSelectedMandiIds] = useState<string[]>([
     "jaipur-apmc",
@@ -56,7 +64,6 @@ export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" 
     };
   });
 
-  // Sort by highest net income
   const bestMandi = [...comparedMandis].sort((a, b) => b.netIncome - a.netIncome)[0];
 
   return (
@@ -73,7 +80,9 @@ export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" 
                 {t.compareMandisTitle}
               </h3>
               <p className="text-xs text-emerald-200">
-                परिवहन खर्च (Freight) काटकर किस मंडी में सबसे ज्यादा मुनाफा मिलेगा?
+                {isEn
+                  ? "Which mandi yields the highest net in-pocket profit after deducting freight?"
+                  : "परिवहन खर्च (Freight) काटकर किस मंडी में सबसे ज्यादा मुनाफा मिलेगा?"}
               </p>
             </div>
           </div>
@@ -89,7 +98,7 @@ export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" 
         <div className="p-5 bg-gray-50 border-b border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1.5">
-              🌾 फसल चुनें / Select Crop:
+              🌾 {isEn ? "Select Commodity / Crop:" : "फसल चुनें:"}
             </label>
             <select
               value={selectedCropId}
@@ -98,7 +107,7 @@ export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" 
             >
               {CROPS_INTELLIGENCE.map((crop) => (
                 <option key={crop.id} value={crop.id}>
-                  {crop.nameHi} (MSP: ₹{crop.msp})
+                  {isEn ? crop.name : crop.nameHi} ({crop.varietyList[0] || crop.name})
                 </option>
               ))}
             </select>
@@ -106,156 +115,148 @@ export function MandiComparisonModal({ isOpen, onClose, defaultCropId = "wheat" 
 
           <div>
             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1.5">
-              ⚖️ विक्रय मात्रा (क्विंटल) / Quantity:
+              ⚖️ {isEn ? "Total Harvest Volume (Quintals):" : "कुल फसल मात्रा (क्विंटल):"}
             </label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <input
-                type="number"
-                min={5}
-                max={2000}
+                type="range"
+                min={10}
+                max={200}
+                step={5}
                 value={quantityQtl}
-                onChange={(e) => setQuantityQtl(Number(e.target.value) || 1)}
-                className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-sm font-bold text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                onChange={(e) => setQuantityQtl(Number(e.target.value))}
+                className="flex-1 accent-emerald-600 cursor-pointer"
               />
-              <span className="text-sm font-bold text-gray-600 shrink-0">क्विंटल (Qtl)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Mandi Selector Pills */}
-        <div className="px-5 pt-3">
-          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
-            तुलना हेतु मंडियां चुनें (कम से कम 2, अधिकतम 4):
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {MANDIS_DATA.map((mandi) => {
-              const isSelected = selectedMandiIds.includes(mandi.id);
-              return (
-                <button
-                  key={mandi.id}
-                  onClick={() => toggleMandi(mandi.id)}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition cursor-pointer flex items-center gap-1.5 ${
-                    isSelected
-                      ? "bg-emerald-600 text-white border-emerald-700 shadow-xs"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-emerald-50"
-                  }`}
-                >
-                  <Store className="w-3.5 h-3.5" />
-                  {mandi.nameHi} ({mandi.distanceKm} km)
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Best Recommendation Banner */}
-        {bestMandi && (
-          <div className="m-5 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-emerald-600/15 border-2 border-emerald-500 flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
-              <Award className="w-7 h-7" />
-            </div>
-            <div>
-              <span className="text-[11px] font-black text-emerald-800 uppercase tracking-wider bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
-                ⭐ सर्वोत्तम मंडी अनुशंसा (Most Profitable)
+              <span className="font-mono font-black text-sm text-emerald-950 bg-white border border-emerald-300 px-3 py-1.5 rounded-xl shrink-0">
+                {quantityQtl} {isEn ? "Qtl" : "क्विंटल"}
               </span>
-              <h4 className="text-base font-extrabold text-emerald-950 mt-1">
-                {bestMandi.nameHi} — हाथ में शुद्ध प्राप्ति ₹{bestMandi.netRatePerQtl}/क्विंटल
-              </h4>
-              <p className="text-xs text-emerald-800 font-medium">
-                {quantityQtl} क्विंटल पर परिवहन खर्च काटने के बाद आपको कुल ₹
-                {bestMandi.netIncome.toLocaleString("en-IN")} शुद्ध हाथ में मिलेंगे।
-              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Best Recommendation Highlight Banner */}
+        {bestMandi && (
+          <div className="p-5 bg-gradient-to-r from-emerald-900 to-teal-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-emerald-950">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center font-black shrink-0">
+                <Award className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-300">
+                  🏆 {isEn ? "Best Net Realization Mandi" : "सर्वोत्तम शुद्ध लाभ मंडी (AI Recommendation)"}
+                </span>
+                <h4 className="text-lg font-black text-white">
+                  {isEn ? bestMandi.name : bestMandi.nameHi} ({bestMandi.distanceKm} {isEn ? "km away" : "किमी दूर"})
+                </h4>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0">
+              <span className="text-xs text-emerald-300 block">
+                {isEn ? "Net In-Pocket Profit:" : "शुद्ध जेब में बचत (Net in Pocket):"}
+              </span>
+              <span className="text-2xl font-black text-amber-300 font-mono">
+                ₹{bestMandi.netIncome.toLocaleString("en-IN")}
+              </span>
+              <span className="text-[11px] text-emerald-200 block">
+                ({isEn ? "Effective" : "प्रभावी दर"}: ₹{bestMandi.netRatePerQtl}/qtl)
+              </span>
             </div>
           </div>
         )}
 
-        {/* Side-by-Side Comparison Cards */}
-        <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
-          {comparedMandis.map((mandi) => {
-            const isWinner = bestMandi?.id === mandi.id;
-            return (
-              <div
-                key={mandi.id}
-                className={`rounded-2xl p-4 transition relative flex flex-col justify-between ${
-                  isWinner
-                    ? "bg-emerald-50 border-2 border-emerald-600 shadow-md"
-                    : "bg-white border border-gray-200 hover:border-emerald-300 shadow-2xs"
-                }`}
-              >
-                {isWinner && (
-                  <span className="absolute -top-3 right-4 bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs">
-                    सर्वाधिक मुनाफा ✓
-                  </span>
-                )}
+        {/* Side-by-Side Comparison Table */}
+        <div className="p-5 space-y-4 flex-1">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              📊 {isEn ? "Mandi-by-Mandi Cost & Net Realization Breakdown" : "मंडीवार भाड़ा व शुद्ध कमाई तुलना"}
+            </h4>
+            <span className="text-[11px] text-gray-400">
+              {isEn ? "(Select 2 to 4 mandis)" : "(2 से 4 मंडियों का चयन करें)"}
+            </span>
+          </div>
 
-                <div>
-                  <div className="font-extrabold text-base text-gray-900 mb-1">{mandi.nameHi}</div>
-                  <div className="text-xs text-gray-500 flex items-center gap-2 mb-3">
-                    <span>📍 {mandi.distanceKm} किमी दूर</span>
-                    <span>•</span>
-                    <span>{mandi.district}, {mandi.state}</span>
-                  </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-gray-50 text-gray-700 font-extrabold border-y border-gray-200">
+                  <th className="p-3">{isEn ? "Mandi / Market" : "मंडी का नाम"}</th>
+                  <th className="p-3">{isEn ? "Gross Price" : "मंडी भाव"}</th>
+                  <th className="p-3">{isEn ? "Distance & Freight" : "दूरी व भाड़ा खर्च"}</th>
+                  <th className="p-3">{isEn ? "Gross Realization" : "सकल आय (Gross)"}</th>
+                  <th className="p-3 text-emerald-800">{isEn ? "Net In-Pocket" : "शुद्ध जेब में (Net)"}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 font-medium">
+                {comparedMandis.map((m) => {
+                  const isWinner = m.id === bestMandi?.id;
+                  return (
+                    <tr
+                      key={m.id}
+                      className={isWinner ? "bg-emerald-50/80 font-bold" : "hover:bg-gray-50"}
+                    >
+                      <td className="p-3">
+                        <div className="font-extrabold text-sm text-gray-900">
+                          {isEn ? m.name : m.nameHi}
+                          {isWinner && (
+                            <span className="ml-1.5 text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
+                              {isEn ? "Best ✓" : "सर्वोत्तम ✓"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500">{m.district}, {m.state}</div>
+                      </td>
 
-                  <div className="space-y-2 text-xs border-t border-gray-100 pt-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">मंडी मॉडल भाव:</span>
-                      <span className="font-black text-sm text-gray-900">₹{mandi.modalPrice}/qtl</span>
-                    </div>
+                      <td className="p-3">
+                        <span className="text-sm font-black text-gray-900 font-mono">
+                          ₹{m.modalPrice}
+                        </span>
+                        <span className="text-gray-400 text-[10px] block">/qtl</span>
+                      </td>
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600 flex items-center gap-1">
-                        <Truck className="w-3.5 h-3.5 text-amber-600" />
-                        परिवहन भाड़ा (किमी अनुसार):
-                      </span>
-                      <span className="font-bold text-rose-600">- ₹{mandi.transportCostPerQtl}/qtl</span>
-                    </div>
+                      <td className="p-3">
+                        <div className="text-gray-700">
+                          {m.distanceKm} {isEn ? "km" : "किमी"} • ₹{m.transportCostPerQtl}/qtl
+                        </div>
+                        <div className="text-xs font-bold text-rose-600">
+                          - ₹{m.totalFreight.toLocaleString("en-IN")} {isEn ? "freight" : "भाड़ा"}
+                        </div>
+                      </td>
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">आज की कुल आवक:</span>
-                      <span className="font-semibold text-gray-800">
-                        {mandi.priceObj?.arrivalTodayQtl || mandi.arrivalVolumeQtl} क्विंटल
-                      </span>
-                    </div>
+                      <td className="p-3 font-mono text-gray-700">
+                        ₹{m.grossIncome.toLocaleString("en-IN")}
+                      </td>
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600">गुणवत्ता मानक:</span>
-                      <span className="font-semibold text-emerald-800 text-[11px] truncate max-w-[130px]" title={mandi.priceObj?.qualityRequirement}>
-                        {mandi.priceObj?.qualityRequirement || "FAQ Standard"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Net Summary Box */}
-                <div className="mt-4 pt-3 border-t border-gray-200 bg-white/70 p-3 rounded-xl">
-                  <div className="text-[11px] text-gray-500 font-bold uppercase">
-                    शुद्ध हाथ में भाव (Net Realization):
-                  </div>
-                  <div className="text-xl font-black text-emerald-700 mt-0.5">
-                    ₹{mandi.netRatePerQtl} <span className="text-xs font-normal text-gray-600">/ क्विंटल</span>
-                  </div>
-                  <div className="text-xs font-bold text-gray-900 mt-1">
-                    कुल शुद्ध राशि ({quantityQtl} क्विंटल): ₹{mandi.netIncome.toLocaleString("en-IN")}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                      <td className="p-3">
+                        <div className="text-base font-black text-emerald-700 font-mono">
+                          ₹{m.netIncome.toLocaleString("en-IN")}
+                        </div>
+                        <div className="text-[11px] text-emerald-900 font-bold">
+                          ₹{m.netRatePerQtl}/qtl {isEn ? "net rate" : "शुद्ध दर"}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Footer */}
+        {/* Footer Actions */}
         <div className="p-4 bg-gray-50 border-t border-gray-200 rounded-b-3xl flex items-center justify-between">
           <button
             onClick={onClose}
-            className="text-xs font-bold text-gray-600 hover:text-gray-900 px-4 py-2 rounded-xl hover:bg-gray-200 transition cursor-pointer"
+            className="text-xs font-bold text-gray-600 hover:text-gray-900 px-4 py-2 rounded-xl transition cursor-pointer"
           >
-            बंद करें (Close)
+            {isEn ? "Close" : "बंद करें"}
           </button>
+
           <button
             onClick={onClose}
-            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-xs cursor-pointer"
+            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition cursor-pointer"
           >
-            इस मंडी में परिवहन बुक करें
+            {isEn ? "Done" : "हो गया"}
           </button>
         </div>
       </div>

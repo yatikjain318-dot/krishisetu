@@ -25,7 +25,8 @@ import {
 } from "lucide-react";
 
 export default function PricesPage() {
-  const { t, playChime } = useI18n();
+  const { t, language, playChime } = useI18n();
+  const isEn = language === "en";
 
   const [selectedCrop, setSelectedCrop] = useState<string>("all");
   const [selectedState, setSelectedState] = useState<string>("all");
@@ -72,7 +73,9 @@ export default function PricesPage() {
             </span>
           </div>
           <p className="text-xs sm:text-sm text-gray-600 mt-1">
-            प्रमुख मंडियों के दैनिक मॉडल भाव, आवक, परिवहन खर्च और AI मूल्य विश्लेषण
+            {isEn
+              ? "Live modal prices, arrival volumes, freight calculations, and AI price forecasts across 16+ national mandis"
+              : "प्रमुख मंडियों के दैनिक मॉडल भाव, आवक, परिवहन खर्च और AI मूल्य विश्लेषण"}
           </p>
         </div>
 
@@ -82,7 +85,7 @@ export default function PricesPage() {
             className="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
           >
             <Mic className="w-4 h-4 animate-pulse text-amber-300" />
-            बोलकर भाव पूछें
+            {isEn ? "Voice Query" : "बोलकर भाव पूछें"}
           </button>
 
           <button
@@ -108,7 +111,7 @@ export default function PricesPage() {
               : "border-transparent text-gray-500 hover:text-gray-900"
           }`}
         >
-          🏪 मंडीवार भाव सूची (Mandi Rates Table)
+          🏪 {isEn ? "Mandi Rates Table" : "मंडीवार भाव सूची (Mandi Rates Table)"}
         </button>
         <button
           onClick={() => setActiveTab("intelligence")}
@@ -119,7 +122,7 @@ export default function PricesPage() {
           }`}
         >
           <Sparkles className="w-4 h-4 text-amber-500" />
-          📈 AI मूल्य सूझबूझ व 7-दिन भविष्यवाणी (AI Intelligence)
+          📈 {isEn ? "AI Price Intelligence & 7-Day Forecast" : "AI मूल्य सूझबूझ व 7-दिन भविष्यवाणी"}
         </button>
       </div>
 
@@ -131,7 +134,7 @@ export default function PricesPage() {
               <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="मंडी या जिले का नाम खोजें..."
+                placeholder={isEn ? "Search mandi or district name..." : "मंडी या जिले का नाम खोजें..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -147,7 +150,7 @@ export default function PricesPage() {
                 <option value="all">🌾 {t.allCrops}</option>
                 {cropsList.map((c) => (
                   <option key={c.id} value={c.id}>
-                    {c.nameHi}
+                    {isEn ? c.name : c.nameHi}
                   </option>
                 ))}
               </select>
@@ -174,112 +177,72 @@ export default function PricesPage() {
             {filteredMandis.length === 0 ? (
               <div className="bg-white rounded-2xl p-10 text-center border border-gray-200">
                 <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                <h3 className="text-base font-bold text-gray-800">कोई मंडी परिणाम नहीं मिला</h3>
-                <p className="text-xs text-gray-500 mt-1">कृपया फ़िल्टर या खोज शब्द बदलें।</p>
+                <h3 className="text-base font-bold text-gray-800">{isEn ? "No Mandi Results Found" : "कोई मंडी परिणाम नहीं मिला"}</h3>
+                <p className="text-xs text-gray-500 mt-1">{isEn ? "Please adjust your search query or filters." : "कृपया फ़िल्टर या खोज शब्द बदलें।"}</p>
               </div>
             ) : (
               filteredMandis.map((mandi) => (
                 <div
                   key={mandi.id}
-                  className="bg-white rounded-3xl p-5 border border-gray-200 shadow-xs hover:border-emerald-400 hover:shadow-md transition space-y-4"
+                  className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200 hover:border-emerald-500 shadow-sm transition space-y-4"
                 >
-                  {/* Mandi Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-extrabold text-gray-900">{mandi.nameHi}</h3>
-                        <span className="text-[11px] bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md border border-emerald-200">
-                          {mandi.state}
+                        <h3 className="text-lg font-black text-gray-900">
+                          {isEn ? mandi.name : mandi.nameHi} ({mandi.name})
+                        </h3>
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                          {mandi.distanceKm} {isEn ? "km away" : "किमी दूर"}
                         </span>
                       </div>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mt-1">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                          दूरी: <strong>{mandi.distanceKm} किमी</strong>
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Truck className="w-3.5 h-3.5 text-amber-600" />
-                          अनुमानित भाड़ा: <strong>₹{mandi.transportCostPerQtl}/क्विंटल</strong>
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-blue-600" />
-                          समय: {mandi.timings}
-                        </span>
-                      </div>
+                      <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-emerald-600" />
+                        {mandi.district}, {mandi.state} • {isEn ? `Freight: ₹${mandi.transportCostPerQtl}/qtl` : `अनुमानित भाड़ा: ₹${mandi.transportCostPerQtl}/क्विंटल`}
+                      </p>
                     </div>
 
-                    <button
-                      onClick={() => {
-                        playChime();
-                        setComparisonModalOpen(true);
-                      }}
-                      className="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition self-start sm:self-auto cursor-pointer"
-                    >
-                      तुलना में जोड़ें +
-                    </button>
+                    <div className="text-xs text-gray-500 font-semibold bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200 self-start sm:self-auto">
+                      {isEn ? `Daily Arrival: ` : `दैनिक आवक: `}
+                      <strong className="text-gray-900 font-mono">{mandi.arrivalVolumeQtl} {isEn ? "Qtl" : "क्विंटल"}</strong>
+                    </div>
                   </div>
 
-                  {/* Crop Prices Table */}
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead>
-                        <tr className="bg-gray-50 text-gray-600 font-bold border-y border-gray-100">
-                          <th className="py-2.5 px-3">फसल व किस्म</th>
-                          <th className="py-2.5 px-3">{t.minPrice}</th>
-                          <th className="py-2.5 px-3">{t.maxPrice}</th>
-                          <th className="py-2.5 px-3 text-emerald-800">{t.modalPrice}</th>
-                          <th className="py-2.5 px-3">{t.priceTrend}</th>
-                          <th className="py-2.5 px-3">{t.arrivalVolume}</th>
-                          <th className="py-2.5 px-3">गुणवत्ता मानक</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100 font-medium">
-                        {mandi.cropPrices
-                          .filter((cp) => selectedCrop === "all" || cp.cropId === selectedCrop)
-                          .map((price, i) => (
-                            <tr key={i} className="hover:bg-emerald-50/50 transition">
-                              <td className="py-3 px-3">
-                                <div className="font-bold text-gray-900">{price.cropNameHi}</div>
-                                <div className="text-[11px] text-gray-500">{price.variety}</div>
-                              </td>
-                              <td className="py-3 px-3 text-gray-700">₹{price.minPrice}</td>
-                              <td className="py-3 px-3 text-gray-700">₹{price.maxPrice}</td>
-                              <td className="py-3 px-3 font-black text-sm text-emerald-700">
-                                ₹{price.modalPrice}
-                              </td>
-                              <td className="py-3 px-3">
-                                <span
-                                  className={`inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-md ${
-                                    price.trend === "up"
-                                      ? "bg-emerald-100 text-emerald-800"
-                                      : price.trend === "down"
-                                      ? "bg-rose-100 text-rose-800"
-                                      : "bg-gray-100 text-gray-800"
-                                  }`}
-                                >
-                                  {price.trend === "up" ? (
-                                    <TrendingUp className="w-3 h-3" />
-                                  ) : price.trend === "down" ? (
-                                    <TrendingDown className="w-3 h-3" />
-                                  ) : (
-                                    <Minus className="w-3 h-3" />
-                                  )}
-                                  {price.changePercent > 0 ? "+" : ""}
-                                  {price.changePercent}%
-                                </span>
-                              </td>
-                              <td className="py-3 px-3 text-gray-800">
-                                {price.arrivalTodayQtl} क्विंटल
-                              </td>
-                              <td className="py-3 px-3 text-[11px] text-gray-500 max-w-xs truncate" title={price.qualityRequirement}>
-                                {price.qualityRequirement}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {mandi.cropPrices
+                      .filter((cp) => selectedCrop === "all" || cp.cropId === selectedCrop)
+                      .map((cp, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-gray-50 p-3.5 rounded-2xl border border-gray-200 hover:bg-emerald-50/60 hover:border-emerald-300 transition"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-sm text-gray-900">
+                              {isEn ? cp.cropName : cp.cropNameHi}
+                            </span>
+                            <span className="text-[10px] text-gray-500 font-medium">
+                              {cp.variety}
+                            </span>
+                          </div>
+
+                          <div className="flex items-baseline justify-between mt-2 pt-2 border-t border-gray-200">
+                            <div>
+                              <span className="text-xs text-gray-500 block">{isEn ? "Modal Rate:" : "मॉडल भाव:"}</span>
+                              <span className="text-xl font-black text-emerald-700 font-mono">
+                                ₹{cp.modalPrice}
+                              </span>
+                              <span className="text-[10px] text-gray-400 ml-1">/qtl</span>
+                            </div>
+
+                            <div className="text-right text-[11px] text-gray-600">
+                              <div>Range: ₹{cp.minPrice} - ₹{cp.maxPrice}</div>
+                              <span className={`font-bold font-mono text-[10px] ${cp.changePercent >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
+                                {cp.changePercent >= 0 ? `▲ +${cp.changePercent}%` : `▼ ${cp.changePercent}%`}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </div>
               ))
@@ -288,122 +251,69 @@ export default function PricesPage() {
         </div>
       )}
 
-      {/* AI Price Intelligence & 7-Day Forecasting Tab */}
+      {/* Tab 2: AI Price Intelligence */}
       {activeTab === "intelligence" && (
         <div className="space-y-6">
-          {/* Crop Selector Pills */}
-          <div className="flex flex-wrap gap-2">
-            {cropsList.map((c) => {
-              const isSelected = selectedCropForIntel === c.id;
-              return (
-                <button
-                  key={c.id}
-                  onClick={() => setSelectedCropForIntel(c.id)}
-                  className={`px-4 py-2 rounded-2xl text-xs sm:text-sm font-extrabold transition cursor-pointer ${
-                    isSelected
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-white text-gray-800 border border-gray-200 hover:bg-emerald-50"
-                  }`}
-                >
-                  {c.nameHi}
-                </button>
-              );
-            })}
+          {/* Crop Selector Chips */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+            {cropsList.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setSelectedCropForIntel(c.id)}
+                className={`px-4 py-2 rounded-2xl text-xs font-black transition whitespace-nowrap cursor-pointer ${
+                  selectedCropForIntel === c.id
+                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30 scale-105"
+                    : "bg-white text-gray-700 hover:bg-emerald-50 border border-gray-200"
+                }`}
+              >
+                {isEn ? c.name : c.nameHi}
+              </button>
+            ))}
           </div>
 
-          {/* AI Decision Box */}
-          <div className="bg-gradient-to-br from-emerald-900 to-teal-950 text-white p-6 rounded-3xl shadow-xl space-y-4 relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* AI Intelligence Card */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
-                <span className="text-xs uppercase font-extrabold text-emerald-300 tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  {t.aiRecommendationTitle} ({activeIntelCrop.nameHi})
+                <span className="text-xs font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full uppercase">
+                  {isEn ? "7-Day AI Price Forecast" : "7-दिवसीय AI पूर्वानुमान"}
                 </span>
-                <h3 className="text-2xl font-black text-white mt-1">
-                  AI स्पष्ट फैसला: {activeIntelCrop.aiRecommendation.action.replace(/_/g, " ")}
-                </h3>
+                <h2 className="text-2xl font-black text-gray-900 mt-2">
+                  {isEn ? activeIntelCrop.name : activeIntelCrop.nameHi} ({activeIntelCrop.varietyList.join(", ")})
+                </h2>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {isEn ? "Govt MSP:" : "सरकारी MSP:"} <strong>₹{activeIntelCrop.msp}/qtl</strong> • {isEn ? "Today's Modal Average:" : "वर्तमान औसत भाव:"} <strong>₹{activeIntelCrop.currentAvgModal}/qtl</strong>
+                </p>
               </div>
 
-              <div className="bg-white/10 p-3 rounded-2xl border border-white/20 text-center shrink-0">
-                <span className="text-[11px] text-emerald-200 block font-semibold">AI विश्वास स्कोर</span>
-                <span className="text-2xl font-black text-amber-300">{activeIntelCrop.aiRecommendation.confidence}%</span>
-              </div>
-            </div>
-
-            <p className="text-sm text-emerald-50 leading-relaxed font-medium bg-white/10 p-4 rounded-2xl border border-white/10">
-              💡 {activeIntelCrop.aiRecommendation.reasonHi}
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs pt-2">
-              <div className="bg-white/10 p-3 rounded-xl">
-                <span className="text-emerald-300 block">आज का औसत भाव</span>
-                <span className="text-lg font-black text-white">₹{activeIntelCrop.currentAvgModal}</span>
-              </div>
-              <div className="bg-white/10 p-3 rounded-xl">
-                <span className="text-emerald-300 block">7-दिन अनुमानित भाव</span>
-                <span className="text-lg font-black text-amber-300">₹{activeIntelCrop.aiRecommendation.targetPriceProjection}</span>
-              </div>
-              <div className="bg-white/10 p-3 rounded-xl">
-                <span className="text-emerald-300 block">30-दिन बदलाव</span>
-                <span className="text-lg font-black text-emerald-400">+{activeIntelCrop.thirtyDayTrendPercent}%</span>
-              </div>
-              <div className="bg-white/10 p-3 rounded-xl">
-                <span className="text-emerald-300 block">सरकारी MSP</span>
-                <span className="text-lg font-black text-white">₹{activeIntelCrop.msp}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Historical & AI Forecast Chart Data Visualization */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-extrabold text-base text-gray-900">
-                  {activeIntelCrop.nameHi} — 30-दिन ऐतिहासिक भाव एवं 7-दिन AI पूर्वानुमान
-                </h3>
-                <span className="text-xs text-gray-500">
-                  (नीले स्तम्भ = वास्तविक भाव, पीले स्तम्भ = AI अनुमान)
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-400 text-amber-950 font-black text-xs px-3 py-1.5 rounded-xl shadow-xs">
+                  {activeIntelCrop.aiRecommendation.action.replace(/_/g, " ")}
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 items-end h-56 pt-6 px-2 bg-gray-50 rounded-2xl border border-gray-100">
-              {activeIntelCrop.chartData.map((pt, idx) => {
-                const heightPct = Math.max(25, Math.min(100, ((pt.price - 2000) / 4500) * 100));
-                return (
-                  <div key={idx} className="flex flex-col items-center gap-1 h-full justify-end group">
-                    <span className="text-[10px] font-bold text-gray-700 group-hover:text-emerald-700">
-                      ₹{pt.price}
-                    </span>
-                    <div
-                      style={{ height: `${heightPct}%` }}
-                      className={`w-full max-w-[28px] rounded-t-lg transition-all ${
-                        pt.projected
-                          ? "bg-gradient-to-t from-amber-500 to-amber-300 border-2 border-dashed border-amber-600 animate-pulse"
-                          : "bg-gradient-to-t from-emerald-600 to-teal-500"
-                      }`}
-                    />
-                    <span className="text-[10px] text-gray-500 font-semibold truncate max-w-[40px] text-center">
-                      {pt.date}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-950">
-              {t.aiEstimatesDisclaimer}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 space-y-2">
+              <div className="text-xs font-black text-emerald-950 uppercase tracking-wider">
+                💡 {isEn ? "AI Market Advisory & Recommendation:" : "AI मार्केट विश्लेषण व सलाह:"}
+              </div>
+              <p className="text-sm font-bold text-emerald-950 leading-relaxed">
+                {isEn ? activeIntelCrop.aiRecommendation.reasonEn : activeIntelCrop.aiRecommendation.reasonHi}
+              </p>
+              <div className="text-xs text-emerald-800 pt-1">
+                {isEn ? "Projected Target Rate:" : "अनुमानित लक्ष्य भाव:"} <strong>₹{activeIntelCrop.aiRecommendation.targetPriceProjection}/qtl</strong> ({isEn ? `within ${activeIntelCrop.aiRecommendation.expectedRiseDays} days` : `${activeIntelCrop.aiRecommendation.expectedRiseDays} दिनों के भीतर`})
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modals */}
       <MandiComparisonModal
         isOpen={comparisonModalOpen}
         onClose={() => setComparisonModalOpen(false)}
-        defaultCropId={selectedCrop === "all" ? "wheat" : selectedCrop}
+        selectedCrop={selectedCrop !== "all" ? selectedCrop : "wheat"}
       />
+
       <VoiceMarketQueryModal
         isOpen={voiceModalOpen}
         onClose={() => setVoiceModalOpen(false)}

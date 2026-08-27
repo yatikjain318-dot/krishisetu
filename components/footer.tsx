@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const isEn = language === "en";
 
   return (
     <footer className="bg-emerald-950 text-emerald-100 border-t border-emerald-900 pt-14 pb-24 lg:pb-12">
@@ -37,7 +38,9 @@ export function Footer() {
                 {t.kisanCallCenter}
               </div>
               <p className="text-xs text-emerald-300 mt-0.5">
-                निशुल्क 24x7 किसान सेवा केंद्र • सभी 12 भारतीय भाषाओं में सहायता उपलब्ध
+                {isEn
+                  ? "Toll-Free 24x7 Farmer Helpline • Support Available in 12 Indian Languages"
+                  : "निशुल्क 24x7 किसान सेवा केंद्र • सभी 12 भारतीय भाषाओं में सहायता उपलब्ध"}
               </p>
             </div>
           </div>
@@ -67,28 +70,35 @@ export function Footer() {
                 <Sprout className="w-6 h-6" />
               </div>
               <span className="text-2xl font-black text-white tracking-tight">
-                KrishiSetu <span className="text-emerald-400">कृषिसेतु</span>
+                KrishiSetu <span className="text-emerald-400">{isEn ? "" : "कृषिसेतु"}</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-emerald-300/90 leading-relaxed">
-              {t.brandTagline} — भारत के किसानों, एफपीओ और कॉर्पोरेट खरीदारों के बीच सीधा, पारदर्शी और एस्क्रो-सुरक्षित डिजिटल कृषि सेतु।
+              {t.brandTagline} —{" "}
+              {isEn
+                ? "Direct, transparent, and escrow-protected agricultural marketplace connecting Indian farmers, FPOs, and verified institutional buyers."
+                : "भारत के किसानों, एफपीओ और कॉर्पोरेट खरीदारों के बीच सीधा, पारदर्शी और एस्क्रो-सुरक्षित डिजिटल कृषि सेतु।"}
             </p>
             <div className="flex items-center gap-2 text-xs text-amber-300 font-bold bg-amber-950/40 border border-amber-800/60 p-2.5 rounded-xl">
               <ShieldCheck className="w-4 h-4 shrink-0 text-amber-400" />
-              <span>0% बिचौलिया कटौती • 24 घंटे में गारंटीड एस्क्रो भुगतान</span>
+              <span>
+                {isEn
+                  ? "0% Middleman Deduction • Guaranteed 24-Hour Escrow Settlement"
+                  : "0% बिचौलिया कटौती • 24 घंटे में गारंटीड एस्क्रो भुगतान"}
+              </span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-3">
             <h4 className="text-base font-bold text-white tracking-wide">
-              प्रमुख कृषि सेवाएं
+              {isEn ? "Core Agri Services" : "प्रमुख कृषि सेवाएं"}
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-emerald-300">
               <li>
                 <Link href="/prices" className="hover:text-white transition flex items-center gap-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                  {t.navPrices} (AI भविष्यवाणी)
+                  {t.navPrices} {isEn ? "(AI Forecast)" : "(AI भविष्यवाणी)"}
                 </Link>
               </li>
               <li>
@@ -100,25 +110,25 @@ export function Footer() {
               <li>
                 <Link href="/my-crops" className="hover:text-white transition flex items-center gap-1.5">
                   <Sprout className="w-3.5 h-3.5 text-emerald-400" />
-                  {t.createDigitalLot} (QR पासपोर्ट)
+                  {t.createDigitalLot} {isEn ? "(QR Passport)" : "(QR पासपोर्ट)"}
                 </Link>
               </li>
               <li>
                 <Link href="/storage" className="hover:text-white transition flex items-center gap-1.5">
                   <Warehouse className="w-3.5 h-3.5 text-emerald-400" />
-                  {t.navStorage} (ROI कैलकुलेटर)
+                  {t.navStorage} {isEn ? "(ROI Calculator)" : "(ROI कैलकुलेटर)"}
                 </Link>
               </li>
               <li>
                 <Link href="/transport" className="hover:text-white transition flex items-center gap-1.5">
                   <Truck className="w-3.5 h-3.5 text-emerald-400" />
-                  {t.navTransport} (लाइव GPS)
+                  {t.navTransport} {isEn ? "(Live GPS)" : "(लाइव GPS)"}
                 </Link>
               </li>
               <li>
                 <Link href="/fpo" className="hover:text-white transition flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5 text-emerald-400" />
-                  {t.navFPO} (थोक एग्रीगेशन)
+                  {t.navFPO} {isEn ? "(Bulk Aggregation)" : "(थोक एग्रीगेशन)"}
                 </Link>
               </li>
             </ul>
@@ -128,21 +138,21 @@ export function Footer() {
           <div className="space-y-3">
             <h4 className="text-base font-bold text-white tracking-wide flex items-center gap-1.5">
               <Globe2 className="w-4 h-4 text-emerald-400" />
-              12 भारतीय भाषाएँ (Languages)
+              12 Indian Languages
             </h4>
             <div className="grid grid-cols-2 gap-1.5 text-xs text-emerald-300/90">
-              <span>🇮🇳 हिन्दी (Hindi)</span>
               <span>🌐 English</span>
-              <span>🐪 राजस्थानी (Rajasthani)</span>
-              <span>🌾 ਪੰਜਾਬੀ (Punjabi)</span>
-              <span>🦁 ગુજરાતી (Gujarati)</span>
-              <span>🚩 मराठी (Marathi)</span>
-              <span>🐅 বাংলা (Bengali)</span>
-              <span>🌱 తెలుగు (Telugu)</span>
-              <span>🛕 தமிழ் (Tamil)</span>
-              <span>🐘 ಕನ್ನಡ (Kannada)</span>
-              <span>🌴 മലയാളം (Malayalam)</span>
-              <span>🌊 ଓଡ଼ିଆ (Odia)</span>
+              <span>🇮🇳 Hindi (हिन्दी)</span>
+              <span>🐪 Rajasthani (राजस्थानी)</span>
+              <span>🌾 Punjabi (ਪੰਜਾਬੀ)</span>
+              <span>🦁 Gujarati (ગુજરાતી)</span>
+              <span>🚩 Marathi (मराठी)</span>
+              <span>🐅 Bengali (বাংলা)</span>
+              <span>🌱 Telugu (తెలుగు)</span>
+              <span>🛕 Tamil (தமிழ்)</span>
+              <span>🐘 Kannada (ಕನ್ನಡ)</span>
+              <span>🌴 Malayalam (മലയാളം)</span>
+              <span>🌊 Odia (ଓଡ଼ିଆ)</span>
             </div>
           </div>
 
@@ -150,20 +160,20 @@ export function Footer() {
           <div className="space-y-3">
             <h4 className="text-base font-bold text-white tracking-wide flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-400" />
-              100% भारतीय किसान सुरक्षा
+              {isEn ? "100% Farmer Protection & Trust" : "100% भारतीय किसान सुरक्षा"}
             </h4>
             <ul className="space-y-2 text-xs text-emerald-300">
               <li className="flex items-center gap-2">
                 <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                सुरक्षित डिजिटल एस्क्रो भुगतान
+                {isEn ? "Secure Digital Escrow Settlements" : "सुरक्षित डिजिटल एस्क्रो भुगतान"}
               </li>
               <li className="flex items-center gap-2">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                WDRA e-NWR गोदाम रसीद पर 75% ऋण
+                {isEn ? "75% Loans against WDRA e-NWR Receipts" : "WDRA e-NWR गोदाम रसीद पर 75% ऋण"}
               </li>
               <li className="flex items-center gap-2">
                 <Award className="w-3.5 h-3.5 text-amber-400" />
-                48-घंटे में त्वरित शिकायत निवारण
+                {isEn ? "48-Hour Dispute Redressal Guarantee" : "48-घंटे में त्वरित शिकायत निवारण"}
               </li>
             </ul>
           </div>
@@ -172,7 +182,10 @@ export function Footer() {
         {/* Bottom copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-emerald-400/80">
           <div>
-            © {new Date().getFullYear()} KrishiSetu (कृषिसेतु) • राष्ट्रीय डिजिटल कृषि बाजार एवं मूल्य आसूचना मंच
+            © {new Date().getFullYear()} KrishiSetu •{" "}
+            {isEn
+              ? "National Digital Agricultural Market & Price Intelligence Platform"
+              : "राष्ट्रीय डिजिटल कृषि बाजार एवं मूल्य आसूचना मंच"}
           </div>
           <div className="flex items-center gap-4">
             <Link href="/transparency" className="hover:text-white transition">
