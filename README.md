@@ -18,6 +18,98 @@ By eliminating information asymmetry and middleman deductions, KrishiSetu delive
 
 ---
 
+## 🏗️ System Architecture
+
+```mermaid
+graph TB
+    subgraph Client_Layer["🖥️ Presentation & Client Layer (Next.js 15 + React 19)"]
+        UI["Unified Master Hub (app/page.tsx)"]
+        Ticker["Live Mandi Rates Ticker (35s/90s Marquee)"]
+        VoiceSTT["Web Speech Recognition (STT) & Synthesis (TTS)"]
+        I18nEngine["12-Language i18n Context Engine"]
+        RoleEngine["Persona Role Switcher (7 Ecosystem Roles)"]
+        ResponsiveLayout["Mobile & Desktop Responsive Viewports"]
+    end
+
+    subgraph Core_Modules["📦 14 Core Platform Modules"]
+        M1["1. Mandi Prices & Forecast (/prices)"]
+        M2["2. Verified Buyers & Matchmaker (/buyers)"]
+        M3["3. Digital Lots & QR Passport (/my-crops)"]
+        M4["4. AI Quality Scanner (/quality)"]
+        M5["5. Negotiation Room (/offers)"]
+        M6["6. Logistics & Live GPS (/transport)"]
+        M7["7. Storage & ROI Engine (/storage)"]
+        M8["8. 7-Step Escrow Payments (/transactions)"]
+        M9["9. Dispute Redressal (/disputes)"]
+        M10["10. FPO Bulk Aggregation (/fpo)"]
+        M11["11. Multilingual Voice AI (/assistant)"]
+        M12["12. Transparency Benchmark (/transparency)"]
+        M13["13. Master Ecosystem Admin (/admin)"]
+        M14["14. Unified Single-Link Hub (/)"]
+    end
+
+    subgraph Intelligence_Layer["🧠 Business Logic & AI Intelligence Engines"]
+        PriceEngine["Mandi Freight & Net Realization Calculator"]
+        MatchmakerEngine["Buyer-Lot Compatibility & KYC Scorer (94%+)"]
+        QualityAssay["AI Computer Vision Grain Moisture & Grading Engine"]
+        EscrowEngine["7-Stage Escrow Timeline & Milestone Triggers"]
+        StorageROI["WDRA e-NWR 75% Pledge Loan & Profit Engine"]
+        GrievanceSLA["48-Hour SLA Dispute Redressal Resolver"]
+    end
+
+    subgraph Data_Layer["💾 Data & Persistence Layer"]
+        PrismaORM["Prisma ORM (v6.19)"]
+        RelationalDB["SQLite / Relational DB Engine"]
+        MockState["In-Memory State & Historical Time-Series Feeds"]
+        APMCFeed["16+ APMC Mandi Real-Time Price & Arrival Feeds"]
+    end
+
+    subgraph External_Integrations["🌐 External Integrations & Services"]
+        BankEscrow["Bank Escrow / Direct DBT Gateway (UTR Tracking)"]
+        GPSFleet["Logistics GPS & Fleet Telematics API"]
+        WDRA["WDRA Accredited e-NWR Electronic Warehouse Registry"]
+        QRCodeGen["QR Code Passport Generator"]
+    end
+
+    Client_Layer --> Core_Modules
+    Core_Modules --> Intelligence_Layer
+    Intelligence_Layer --> Data_Layer
+    Intelligence_Layer --> External_Integrations
+    Data_Layer --> PrismaORM
+    PrismaORM --> RelationalDB
+```
+
+---
+
+## 🔄 End-to-End Escrow & Trade Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Farmer
+    participant Hub as KrishiSetu Platform
+    participant AI as AI Quality & Price Engine
+    actor Buyer
+    participant Escrow as Bank Escrow Vault
+    actor Logistics as Transporter
+
+    Farmer->>Hub: 1. Upload Grain Photo & Create Lot
+    Hub->>AI: 2. Analyze Moisture % & Quality
+    AI-->>Hub: 3. Return Grade A Certificate & QR Passport
+    Hub->>Buyer: 4. Match Lot with Verified Buyers (ITC / Reliance)
+    Buyer->>Hub: 5. Submit Digital Purchase Offer (₹2,700/qtl)
+    Farmer->>Hub: 6. Accept Offer / Submit Counter-Offer
+    Buyer->>Escrow: 7. Lock 100% Funds in Escrow Vault
+    Hub->>Logistics: 8. Dispatch Truck for Farm-Gate Pickup
+    Logistics->>Hub: 9. Live GPS In-Transit Milestones
+    Logistics->>Buyer: 10. Deliver to Buyer Warehouse
+    Buyer->>Hub: 11. Confirm Gate Weighment
+    Hub->>Escrow: 12. Trigger Instant DBT Release
+    Escrow-->>Farmer: 13. ₹1,20,600 Credited to Farmer Bank (UTR Reference)
+```
+
+---
+
 ## 🌟 Key Platform Capabilities (14 Core Modules)
 
 | # | Module | Route | Key Features & Value Proposition |
@@ -55,6 +147,20 @@ KrishiSetu offers instantaneous, zero-latency 1-click language switching across 
 10. 🐘 **Kannada (ಕನ್ನಡ)**
 11. 🌴 **Malayalam (മലയാളം)**
 12. 🌊 **Odia (ଓଡ଼ିଆ)**
+
+---
+
+## 👥 Ecosystem Roles & Security Model
+
+| Ecosystem Role | Access Scope & Permissions | Key Dashboard Views |
+|---|---|---|
+| 👨🌾 **Farmer** | Create crop listings, view mandi rates, receive buyer offers, track payments & GPS. | Crop Listings, QR Passports, Payment Tracker |
+| 👥 **FPO Manager** | Aggregate bulk harvest from 100+ members, corporate tenders, member DBT payouts. | Bulk Tender Portal, Aggregation Pool |
+| 🏭 **Verified Buyer** | Search Grade A lots, submit contracts, deposit escrow funds, approve weighments. | Buyer Matchmaker, Negotiation Room |
+| 🚚 **Transporter** | Accept freight bookings, update GPS transit milestones, upload loading slips. | Logistics Booking, GPS Milestone Tracker |
+| 🏬 **Warehouse Operator** | Manage WDRA silo capacity, issue e-NWR receipts, approve 75% bank pledge loans. | Storage Discovery, Silo Inventory |
+| 🔬 **Assayer / Lab** | Conduct on-farm testing, calibrate AI quality scores, issue assay certificates. | AI Grain Scanner, Quality Audit Console |
+| 👨💼 **Administrator** | Moderate buyer KYC, resolve dispute tickets within 48h SLA, sync mandi feeds. | Master Ecosystem Admin Console |
 
 ---
 
