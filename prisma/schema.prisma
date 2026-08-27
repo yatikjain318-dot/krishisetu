@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String
+  phone         String?         @unique
+  email         String?         @unique
+  role          String          @default("FARMER") // FARMER, ADMIN
+  language      String          @default("hi")
+  location      String?
+  farmSizeAcres Float?          @default(2.5)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  packAccesses  UserPackAccess[]
+  payments      Payment[]
+  crops         Crop[]
+  tickets       SupportTicket[]
+}
+
+model FarmerPack {
+  id                   String           @id @default(cuid())
+  slug                 String           @unique // basic, smart, premium
+  name                 String
+  nameHi               String
+  description          String
+  descriptionHi        String
+  price                Int              // Lump-sum yearly amount in INR (e.g. 199, 499, 999)
+  validityDays         Int              @default(365) // 1 Year Access
+  videoUploadAllowed   Boolean          @default(false)
+  maxDiagnosesPerYear  Int              @default(50)
+  expertAssistance     Boolean          @default(false)
+  prioritySupport      Boolean          @default(false)
+  advancedMonitoring   Boolean          @default(false)
+  isActive             Boolean          @default(true)
+  isPopular            Boolean          @default(false)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  packAccesses         UserPackAccess[]
+  payments             Payment[]
+}
+
+model UserPackAccess {
+  id           String      @id @default(cuid())
+  userId       String
+  packId       String
+  status       String      @default("ACTIVE") // ACTIVE, EXPIRED
+  amountPaid   Int
+  startDate    DateTime    @default(now())
+  expiryDate   DateTime    // Exactly 365 days from startDate
+  paymentId    String?     @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pack         FarmerPack  @relation(fields: [packId], references: [id])
+}
+
+model Payment {
+  id                 String      @id @default(cuid())
+  userId             String
+  packId             String
+  amount             Int         // e.g. 499
+  currency           String      @default("INR")
+  razorpayOrderId    String      @unique
+  razorpayPaymentId  String?     @unique
+  razorpaySignature  String?
+  status             String      @default("SUCCESS") // SUCCESS, PENDING, FAILED
+  paymentMethod      String?     @default("UPI / QR / NetBanking")
+  createdAt          DateTime    @default(now())
+
+  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pack               FarmerPack  @relation(fields: [packId], references: [id])
+}
+
+model Crop {
+  id                 String       @id @default(cuid())
+  userId             String
+  cropType           String       // wheat, mustard, millet, maize, cotton, gram, moong, peanut, paddy, vegetables, fruits, other
+  cropTypeName       String       // localized/display name
+  variety            String?
+  sowingDate         String?
+  location           String?
+  problemDescription String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media              CropMedia[]
+  diagnoses          AIDiagnosis[]
+}
+
+model CropMedia {
+  id        String   @id @default(cuid())
+  cropId    String
+  mediaType String   @default("IMAGE") // IMAGE, VIDEO
+  fileUrl   String
+  fileName  String
+  fileSize  Int?
+  createdAt DateTime @default(now())
+
+  crop      Crop     @relation(fields: [cropId], references: [id], onDelete: Cascade)
+}
+
+model AIDiagnosis {
+  id                String   @id @default(cuid())
+  cropId            String
+  cropHealth        String   // EXCELLENT (उत्कृष्ट), GOOD (स्वस्थ), MODERATE (मध्यम/सामान्य से कमजोर), CRITICAL (गंभीर)
+  healthStatusText  String
+  diseaseName       String?
+  pestName          String?
+  deficiency        String?
+  symptoms          String
+  advisory          String
+  actionPlan        String   // JSON or newline separated step-by-step
+  organicTreatment  String?
+  chemicalTreatment String?
+  prevention        String?
+  severityScore     Int      @default(30) // 0-100
+  confidenceScore   Int      @default(94) // 0-100
+  language          String   @default("hi")
+  isAdvisory        Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  crop              Crop     @relation(fields: [cropId], references: [id], onDelete: Cascade)
+}
+
+model MarketplaceProduct {
+  id             String   @id @default(cuid())
+  name           String
+  nameHi         String
+  category       String   // seeds, fertilizers, equipment, irrigation, tools, organic
+  categoryHi     String
+  price          Int
+  unit           String   // per kg, per bag, per unit, per packet
+  unitHi         String
+  imageUrl       String
+  description    String
+  descriptionHi  String
+  sellerName     String
+  sellerPhone    String
+  sellerLocation String
+  isOrganic      Boolean  @default(false)
+  inStock        Boolean  @default(true)
+  rating         Float    @default(4.8)
+  createdAt      DateTime @default(now())
+}
+
+model SupportTicket {
+  id        String   @id @default(cuid())
+  userId    String
+  subject   String
+  message   String
+  status    String   @default("OPEN") // OPEN, RESOLVED
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
