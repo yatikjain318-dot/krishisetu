@@ -123,29 +123,29 @@ export default function HomePage() {
     CROPS_INTELLIGENCE.find((c) => c.id === selectedCropQuickId) || CROPS_INTELLIGENCE[0];
 
   const quickCrops = [
-    { id: "wheat", name: "गेहूं (Wheat)", icon: "🌾", price: "₹2,650", trend: "+5.8%" },
-    { id: "mustard", name: "सरसों (Mustard)", icon: "🟡", price: "₹5,820", trend: "+3.2%" },
-    { id: "soybean", name: "सोयाबीन (Soybean)", icon: "🌱", price: "₹4,720", trend: "+2.9%" },
-    { id: "cotton", name: "कपास (Cotton)", icon: "⚪", price: "₹7,450", trend: "-1.2%" },
-    { id: "paddy", name: "बासमती धान (Paddy)", icon: "🍚", price: "₹4,050", trend: "+4.5%" },
-    { id: "onion", name: "प्याज (Onion)", icon: "🧅", price: "₹1,750", trend: "+8.2%" },
+    { id: "wheat", name: "Wheat (Sharbati)", icon: "🌾", price: "₹2,650", trend: "+5.8%" },
+    { id: "mustard", name: "Mustard (Sarson)", icon: "🟡", price: "₹5,820", trend: "+3.2%" },
+    { id: "soybean", name: "Soybean", icon: "🌱", price: "₹4,720", trend: "+2.9%" },
+    { id: "cotton", name: "Cotton (Kapas)", icon: "⚪", price: "₹7,450", trend: "-1.2%" },
+    { id: "paddy", name: "Basmati Paddy", icon: "🍚", price: "₹4,050", trend: "+4.5%" },
+    { id: "onion", name: "Onion (Nashik)", icon: "🧅", price: "₹1,750", trend: "+8.2%" },
   ];
 
   const allModulesList = [
-    { id: "overview", label: "🌾 होम एवं हाइलाइट्स", icon: LayoutDashboard },
-    { id: "prices", label: "📊 मंडी भाव व पूर्वानुमान", icon: TrendingUp },
-    { id: "buyers", label: "🏢 सत्यापित खरीदार", icon: ShieldCheck },
-    { id: "lots", label: "📦 डिजिटल लॉट व QR", icon: Sprout },
-    { id: "quality", label: "🔬 AI क्वालिटी स्कैनर", icon: Camera },
-    { id: "offers", label: "🤝 मोलभाव कक्ष", icon: Handshake },
-    { id: "transport", label: "🚚 परिवहन व GPS", icon: Truck },
-    { id: "storage", label: "🏬 गोदाम व ROI", icon: Warehouse },
-    { id: "payments", label: "💳 7-चरणीय भुगतान", icon: CreditCard },
-    { id: "disputes", label: "⚖️ विवाद निवारण", icon: AlertTriangle },
-    { id: "fpo", label: "👥 FPO बल्क टेंडर", icon: Users },
-    { id: "assistant", label: "🎙️ AI वॉइस सहायक", icon: Bot },
-    { id: "transparency", label: "📜 लेजर पारदर्शिता", icon: FileCheck },
-    { id: "admin", label: "🛡️ मास्टर एडमिन", icon: Lock },
+    { id: "overview", label: "🌾 Home & AI Spotlight", icon: LayoutDashboard },
+    { id: "prices", label: "📊 Mandi Prices & Forecast", icon: TrendingUp },
+    { id: "buyers", label: "🏢 Verified Buyers & Match", icon: ShieldCheck },
+    { id: "lots", label: "📦 Digital Lots & QR", icon: Sprout },
+    { id: "quality", label: "🔬 AI Quality Scanner", icon: Camera },
+    { id: "offers", label: "🤝 Negotiation Room", icon: Handshake },
+    { id: "transport", label: "🚚 Logistics & GPS Track", icon: Truck },
+    { id: "storage", label: "🏬 Storage & ROI Engine", icon: Warehouse },
+    { id: "payments", label: "💳 7-Stage Payments", icon: CreditCard },
+    { id: "disputes", label: "⚖️ Dispute Redressal", icon: AlertTriangle },
+    { id: "fpo", label: "👥 FPO Bulk Aggregation", icon: Users },
+    { id: "assistant", label: "🎙️ AI Voice Assistant", icon: Bot },
+    { id: "transparency", label: "📜 Transparency Ledger", icon: FileCheck },
+    { id: "admin", label: "🛡️ Master Admin", icon: Lock },
   ];
 
   return (
@@ -164,10 +164,10 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-emerald-500 animate-ping" />
             <span className="text-xs font-black text-emerald-950 uppercase tracking-wider">
-              एकीकृत कृषि मंच (Unified Single-Portal Experience)
+              KrishiSetu Unified Ecosystem Hub
             </span>
           </div>
-          <span className="text-[11px] font-bold text-gray-500">14 मॉड्युल्स एक ही लिंक पर</span>
+          <span className="text-[11px] font-bold text-gray-500">14 Core Modules on 1 Single URL</span>
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
@@ -206,14 +206,14 @@ export default function HomePage() {
               <div className="space-y-3 max-w-2xl">
                 <div className="inline-flex items-center gap-2 bg-white/10 text-amber-300 text-xs font-black px-3.5 py-1 rounded-full border border-white/10">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>12 भारतीय भाषाएँ • AI मूल्य पूर्वानुमान • 100% सत्यापित खरीदार</span>
+                  <span>12 Indian Languages • AI Price Forecasting • 100% Verified Buyers</span>
                 </div>
                 <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-                  किसान की उपज, <br className="hidden sm:inline" />
-                  <span className="text-amber-400">सही दाम व सीधा खरीदार</span>
+                  Farmer Produce, <br className="hidden sm:inline" />
+                  <span className="text-amber-400">Right Price & Direct Buyers</span>
                 </h1>
                 <p className="text-sm sm:text-base text-emerald-100 font-medium leading-relaxed">
-                  बिचौलियों की सूचना विषमता समाप्त करें। आज के मंडी भाव, 7-दिन का AI रुझान, ITC व Reliance जैसे सत्यापित खरीदार, डिजिटल लॉट और सुरक्षित एस्क्रो भुगतान — सब कुछ एक ही स्थान पर।
+                  Eliminating middleman information asymmetry. Real-time Mandi rates, 7-day AI forecast, verified corporate buyers (ITC, Reliance), digital lots, and escrow-backed payments — all in one place.
                 </p>
               </div>
 
@@ -227,10 +227,10 @@ export default function HomePage() {
                   className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-black text-sm sm:text-base rounded-2xl shadow-xl transition transform hover:scale-105 flex items-center justify-center gap-3 cursor-pointer"
                 >
                   <Mic className="w-6 h-6 animate-pulse text-amber-950" />
-                  <span>{t.voiceAskBtn} (माइक दबाकर बोलें)</span>
+                  <span>{t.voiceAskBtn} (Ask by Voice)</span>
                 </button>
                 <span className="text-xs text-emerald-300 font-medium">
-                  🎙️ अपनी बोली में भाव, खरीदार या स्टोरेज लाभ पूछें
+                  🎙️ Speak in your native language for prices, buyers, or storage gains
                 </span>
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function HomePage() {
             {/* Quick Crop Ticker Chips */}
             <div className="pt-4 border-t border-white/10">
               <div className="text-xs font-bold text-emerald-300 mb-2.5">
-                ⚡ प्रमुख फसलों का आज का मॉडल भाव (Quick Spotlight):
+                ⚡ Today&apos;s Modal Price for Major Crops (Quick Spotlight):
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
                 {quickCrops.map((c) => (
@@ -265,13 +265,13 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
                 <span className="text-xs font-extrabold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
-                  🤖 AI मूल्य बुद्धिमत्ता (Price Intelligence Spotlight)
+                  🤖 AI Price Intelligence Spotlight
                 </span>
                 <h2 className="text-2xl font-black text-gray-900 mt-2">
-                  {activeCropIntel.nameHi} ({activeCropIntel.variety})
+                  {activeCropIntel.name} ({activeCropIntel.variety})
                 </h2>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  न्यूनतम समर्थन मूल्य (MSP): <strong>₹{activeCropIntel.msp}/क्विंटल</strong> • आज का मॉडल भाव: <strong>₹{activeCropIntel.currentAvgModal}/क्विंटल</strong>
+                  Govt MSP: <strong>₹{activeCropIntel.msp}/qtl</strong> • Today&apos;s Modal Average: <strong>₹{activeCropIntel.currentAvgModal}/qtl</strong>
                 </p>
               </div>
 
@@ -281,7 +281,7 @@ export default function HomePage() {
                   className="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <Scale className="w-4 h-4 text-emerald-700" />
-                  मंडी तुलना करें (Compare Mandis)
+                  Compare Mandis (मंडी तुलना)
                 </button>
               </div>
             </div>
@@ -290,13 +290,13 @@ export default function HomePage() {
             <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="text-xs font-black text-emerald-900 uppercase tracking-wider">
-                  AI वैज्ञानिक सिफारिश:
+                  AI Recommendation:
                 </div>
                 <div className="text-lg font-black text-emerald-950">
                   💡 {activeCropIntel.aiRecommendation.action.replace(/_/g, " ")} — {activeCropIntel.aiRecommendation.reasonHi}
                 </div>
                 <div className="text-xs text-emerald-800">
-                  आत्मविश्वास स्तर (Confidence Score): <strong>{activeCropIntel.aiRecommendation.confidenceScore}%</strong>
+                  Confidence Score: <strong>{activeCropIntel.aiRecommendation.confidenceScore}%</strong>
                 </div>
               </div>
 
@@ -304,7 +304,7 @@ export default function HomePage() {
                 onClick={() => setActiveModule("storage")}
                 className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs shrink-0 cursor-pointer"
               >
-                स्टोरेज लाभ कैलकुलेटर खोलें →
+                Open Storage ROI Calculator →
               </button>
             </div>
           </div>
@@ -320,16 +320,16 @@ export default function HomePage() {
             <div>
               <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
                 <TrendingUp className="w-7 h-7 text-emerald-600" />
-                मंडी भाव एवं AI 7-दिवसीय पूर्वानुमान
+                Mandi Prices & 7-Day AI Price Forecast
               </h2>
-              <p className="text-xs text-gray-500">16+ राष्ट्रीय मंडियों के ताजा मॉडल भाव व आवक मात्रा</p>
+              <p className="text-xs text-gray-500">Live modal rates and daily arrival volumes across 16+ national APMC mandis</p>
             </div>
             <button
               onClick={() => setComparisonModalOpen(true)}
               className="px-5 py-2.5 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
             >
               <Scale className="w-4 h-4" />
-              मंडी भाड़ा व शुद्ध बचत तुलना टूल
+              Mandi Freight & Net Realization Tool
             </button>
           </div>
 
@@ -338,12 +338,12 @@ export default function HomePage() {
               <div key={mandi.id} className="bg-white rounded-3xl p-5 border border-gray-200 hover:border-emerald-500 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full">
-                    {mandi.distanceKm} किमी दूर
+                    {mandi.distanceKm} km away
                   </span>
-                  <span className="text-xs text-gray-500 font-bold font-mono">आवक: {mandi.arrivalVolumeQtl} Qtl</span>
+                  <span className="text-xs text-gray-500 font-bold font-mono">Arrival: {mandi.arrivalVolumeQtl} Qtl</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-gray-900">{mandi.nameHi}</h3>
+                  <h3 className="text-lg font-black text-gray-900">{mandi.name}</h3>
                   <p className="text-xs text-gray-500">{mandi.district}, {mandi.state}</p>
                 </div>
                 <div className="space-y-1.5 pt-2 border-t border-gray-100 text-xs">
@@ -368,9 +368,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <ShieldCheck className="w-7 h-7 text-amber-600" />
-              100% KYC सत्यापित कॉर्पोरेट व संस्थागत खरीदार
+              100% KYC Verified Corporate & Institutional Buyers
             </h2>
-            <p className="text-xs text-gray-500">ITC, Reliance, Nestlé, Adani Wilmar एवं प्रमाणित मिलर्स</p>
+            <p className="text-xs text-gray-500">ITC Agri, Reliance Retail, Nestlé, Adani Wilmar & certified processors</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -380,24 +380,24 @@ export default function HomePage() {
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-black px-2.5 py-0.5 rounded-full">
                     ✓ {buyer.kycStatus}
                   </span>
-                  <span className="text-xs font-bold text-amber-600">⭐ {buyer.rating} ({buyer.completedTrades}+ ट्रेड्स)</span>
+                  <span className="text-xs font-bold text-amber-600">⭐ {buyer.rating} ({buyer.completedTrades}+ trades)</span>
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-gray-900">{buyer.name}</h3>
-                  <p className="text-xs text-gray-500">{buyer.categoryHi} • 📍 {buyer.location}</p>
+                  <p className="text-xs text-gray-500">{buyer.category} • 📍 {buyer.location}</p>
                 </div>
                 <div className="bg-amber-50/60 p-3 rounded-2xl border border-amber-200 text-xs space-y-1">
-                  <div className="font-bold text-amber-950">मांग: {buyer.requiredCrops.join(", ")}</div>
-                  <div className="text-gray-600">भुगतान: <strong>{buyer.paymentTerms}</strong> • AI मैच: <strong className="text-emerald-700">{buyer.matchScore}%</strong></div>
+                  <div className="font-bold text-amber-950">Demand: {buyer.requiredCrops.join(", ")}</div>
+                  <div className="text-gray-600">Payment: <strong>{buyer.paymentTerms}</strong> • AI Match: <strong className="text-emerald-700">{buyer.matchScore}%</strong></div>
                 </div>
                 <button
                   onClick={() => {
                     playChime();
-                    showToast(`${buyer.name} को आपका लॉट प्रोफाइल भेजा गया!`);
+                    showToast(`Your lot profile was sent to ${buyer.name}!`);
                   }}
                   className="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs rounded-xl shadow-xs cursor-pointer"
                 >
-                  सीधा प्रस्ताव भेजें (Connect with Buyer)
+                  Connect with Buyer (सीधा प्रस्ताव भेजें)
                 </button>
               </div>
             ))}
@@ -414,9 +414,9 @@ export default function HomePage() {
             <div>
               <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
                 <Sprout className="w-7 h-7 text-emerald-600" />
-                मेरी फसलें एवं डिजिटल QR पासपोर्ट (Digital Lots)
+                My Harvest Listings & Digital QR Passports (Digital Lots)
               </h2>
-              <p className="text-xs text-gray-500">फसल सूचीकरण, गुणवत्ता विवरण एवं सत्यापन योग्य QR कोड</p>
+              <p className="text-xs text-gray-500">Crop listing, moisture and quality parameters with printable QR passports</p>
             </div>
             <button
               onClick={() => {
@@ -433,16 +433,16 @@ export default function HomePage() {
                   qualityGrade: "Grade A",
                   farmLocation: "Morija, Chomu",
                   status: "ACTIVE",
-                  createdAt: "आज",
+                  createdAt: "Today",
                   qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=LOT-WHT-2026",
                 };
                 setLots([created, ...lots]);
-                showToast(`नया लॉट ${newCode} सफलतापूर्वक बनाया गया!`);
+                showToast(`New lot ${newCode} successfully created!`);
               }}
               className="px-5 py-2.5 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
-              नया डिजिटल लॉट जोड़ें
+              Create New Digital Lot
             </button>
           </div>
 
@@ -459,16 +459,16 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-lg font-black text-gray-900">{lot.cropName}</h3>
                 <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50 p-3 rounded-2xl">
-                  <div>मात्रा: <strong>{lot.quantityQtl} क्विंटल</strong></div>
-                  <div>अपेक्षित दर: <strong>₹{lot.expectedPricePerQtl}/qtl</strong></div>
-                  <div>नमी: <strong>{lot.moisturePercent}%</strong></div>
-                  <div>स्थान: <strong>{lot.farmLocation}</strong></div>
+                  <div>Quantity: <strong>{lot.quantityQtl} Quintals</strong></div>
+                  <div>Expected Price: <strong>₹{lot.expectedPricePerQtl}/qtl</strong></div>
+                  <div>Moisture: <strong>{lot.moisturePercent}%</strong></div>
+                  <div>Location: <strong>{lot.farmLocation}</strong></div>
                 </div>
                 <button
                   onClick={() => setQrModalLot(lot)}
                   className="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-300 cursor-pointer"
                 >
-                  📱 डिजिटल QR पासपोर्ट देखें व प्रिंट करें
+                  📱 View & Print QR Passport
                 </button>
               </div>
             ))}
@@ -485,28 +485,28 @@ export default function HomePage() {
             <div>
               <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
                 <Microscope className="w-7 h-7 text-emerald-600" />
-                AI अनाज क्वालिटी स्कैनर एवं मान्यता प्राप्त लैब
+                AI Grain Quality Scanner & Certified Testing Labs
               </h2>
-              <p className="text-xs text-gray-500">मोबाइल फोटो से 10 सेकंड में नमी, कचरा व ग्रेड प्रमाणपत्र पाएं</p>
+              <p className="text-xs text-gray-500">Analyze camera photos in 10s for moisture, foreign matter, and Grade A certification</p>
             </div>
             <button
               onClick={() => setQualityScannerOpen(true)}
               className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold text-xs rounded-xl shadow-md cursor-pointer"
             >
-              नया फोटो स्कैन करें 📷
+              Scan Crop Photo 📷
             </button>
           </div>
 
           <div className="bg-emerald-950 text-white rounded-3xl p-6 sm:p-8 space-y-4 border border-emerald-800">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-black text-amber-300">नवीनतम AI स्कैन परिणाम: गेहूं (Sharbati Gold)</h3>
+              <h3 className="text-xl font-black text-amber-300">Latest AI Scan Result: Wheat (Sharbati Gold)</h3>
               <span className="bg-emerald-500 text-white text-xs font-black px-3 py-1 rounded-full">Grade A (95/100)</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">नमी</span><span className="text-2xl font-black">11.2%</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">कचरा</span><span className="text-2xl font-black">0.4%</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">टूटा दाना</span><span className="text-2xl font-black">1.1%</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">चमक स्कोर</span><span className="text-2xl font-black text-amber-300">95%</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Moisture</span><span className="text-2xl font-black">11.2%</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Foreign Matter</span><span className="text-2xl font-black">0.4%</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Broken Grain</span><span className="text-2xl font-black">1.1%</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Color Score</span><span className="text-2xl font-black text-amber-300">95%</span></div>
             </div>
           </div>
         </div>
@@ -520,9 +520,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <Handshake className="w-7 h-7 text-emerald-600" />
-              डिजिटल मोलभाव कक्ष (Digital Offers & Negotiation Room)
+              Digital Negotiation Room & Escrow Agreements
             </h2>
-            <p className="text-xs text-gray-500">खरीदारों से प्राप्त डिजिटल प्रस्ताव, काउंटर ऑफर एवं एस्क्रो अनुबंध</p>
+            <p className="text-xs text-gray-500">Live buyer offers, instant counter-offers, and automated escrow order creation</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -535,18 +535,18 @@ export default function HomePage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-black text-base text-gray-900">{offer.cropName}</h3>
-                    <p className="text-xs text-gray-500">खरीदार: <strong>{offer.buyerName}</strong></p>
+                    <p className="text-xs text-gray-500">Buyer: <strong>{offer.buyerName}</strong></p>
                   </div>
                   <div className="text-right">
                     <span className="text-2xl font-black text-emerald-700">₹{offer.offeredPrice}</span>
-                    <span className="text-[10px] text-gray-400 block">/ क्विंटल</span>
+                    <span className="text-[10px] text-gray-400 block">/ quintal</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedOfferForModal(offer)}
                   className="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs rounded-xl shadow-xs cursor-pointer"
                 >
-                  मोलभाव कक्ष खोलें (Negotiate / Counter)
+                  Open Negotiation Room (मोलभाव करें)
                 </button>
               </div>
             ))}
@@ -562,19 +562,19 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <Truck className="w-7 h-7 text-emerald-600" />
-              कृषि परिवहन एवं लाइव जीपीएस खेप ट्रैकिंग (Logistics & GPS)
+              Agri Logistics Booking & Live GPS Shipment Tracking
             </h2>
-            <p className="text-xs text-gray-500">खेत से सीधे मंडी या गोदाम तक सुरक्षित वाहन व पारदर्शी प्रति किमी भाड़ा</p>
+            <p className="text-xs text-gray-500">Farm-to-hub fleet booking with transparent ₹/km rates and real-time GPS milestones</p>
           </div>
 
           {shipments.map((ship) => (
             <div key={ship.id} className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-md space-y-4">
               <div className="flex items-center justify-between">
                 <span className="font-mono font-black text-xs text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md">{ship.shipmentCode}</span>
-                <span className="text-xs bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-md animate-pulse">🚚 रास्ते में (In Transit)</span>
+                <span className="text-xs bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-md animate-pulse">🚚 In Transit (रास्ते में)</span>
               </div>
-              <h3 className="text-lg font-black text-gray-900">{ship.cropName} ({ship.quantityQtl} क्विंटल)</h3>
-              <p className="text-xs text-gray-600">वाहन: <strong>{ship.vehicleNumber}</strong> • चालक फोन: <strong>{ship.driverPhone}</strong></p>
+              <h3 className="text-lg font-black text-gray-900">{ship.cropName} ({ship.quantityQtl} Quintals)</h3>
+              <p className="text-xs text-gray-600">Vehicle: <strong>{ship.vehicleNumber}</strong> • Driver: <strong>{ship.driverPhone}</strong></p>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs pt-2">
                 {ship.milestones.map((m, i) => (
                   <div key={i} className={`p-2 rounded-xl text-center border ${m.done ? "bg-emerald-50 border-emerald-300 text-emerald-950 font-bold" : "bg-gray-50 border-gray-200 text-gray-400"}`}>
@@ -596,9 +596,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <Warehouse className="w-7 h-7 text-purple-600" />
-              वैज्ञानिक गोदाम खोज एवं &ldquo;Sell Now vs Store Later&rdquo; ROI इंजन
+              Scientific Warehouses & &ldquo;Sell Now vs Store Later&rdquo; ROI Engine
             </h2>
-            <p className="text-xs text-gray-500">WDRA मान्यता प्राप्त साइलो, e-NWR रसीद पर 75% तात्कालिक बैंक ऋण</p>
+            <p className="text-xs text-gray-500">WDRA accredited silos, 75% e-NWR pledge loans, and storage profit analysis</p>
           </div>
           <SellVsStoreCalculator />
         </div>
@@ -612,9 +612,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <CreditCard className="w-7 h-7 text-emerald-600" />
-              पारदर्शी 7-चरणीय भुगतान एवं एस्क्रो ट्रैकिंग
+              Transparent 7-Step Payment & Escrow Settlement Tracker
             </h2>
-            <p className="text-xs text-gray-500">प्रत्येक सौदे की बैंक यूटीआर संदर्भ संख्या व आधिकारिक पीडीएफ रसीदें</p>
+            <p className="text-xs text-gray-500">Auditable payment timeline with bank UTR numbers and official receipts</p>
           </div>
 
           <div className="space-y-4">
@@ -624,8 +624,8 @@ export default function HomePage() {
                   <span className="font-mono text-xs font-bold text-gray-600">{txn.txnCode}</span>
                   <span className="text-2xl font-black text-emerald-700">₹{txn.totalAmount.toLocaleString("en-IN")}</span>
                 </div>
-                <h3 className="font-bold text-gray-900">{txn.crop} ({txn.quantityQtl} क्विंटल) — {txn.buyerName}</h3>
-                <p className="text-xs text-emerald-700 font-bold">✓ अतिरिक्त लाभ: +₹{txn.extraRealization.toLocaleString("en-IN")} • UTR: {txn.utrNumber}</p>
+                <h3 className="font-bold text-gray-900">{txn.crop} ({txn.quantityQtl} Qtl) — {txn.buyerName}</h3>
+                <p className="text-xs text-emerald-700 font-bold">✓ Extra Farmer Gain: +₹{txn.extraRealization.toLocaleString("en-IN")} • UTR: {txn.utrNumber}</p>
               </div>
             ))}
           </div>
@@ -640,9 +640,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <AlertTriangle className="w-7 h-7 text-rose-600" />
-              विवाद एवं शिकायत निवारण (48-Hour SLA Redressal)
+              Dispute & Grievance Redressal (48-Hour SLA Redressal)
             </h2>
-            <p className="text-xs text-gray-500">भुगतान देरी, वजन अंतर व गुणवत्ता विवादों का निष्पक्ष मध्यस्थता समाधान</p>
+            <p className="text-xs text-gray-500">Fair resolution for payment delays, weight discrepancies, and quality disputes</p>
           </div>
 
           <div className="space-y-4">
@@ -650,13 +650,13 @@ export default function HomePage() {
               <div key={grv.id} className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-0.5 rounded-md">{grv.grievanceId}</span>
-                  <span className="text-xs font-bold text-gray-600">{grv.statusHi}</span>
+                  <span className="text-xs font-bold text-gray-600">{grv.status}</span>
                 </div>
                 <h3 className="font-bold text-gray-900">{grv.title}</h3>
                 <p className="text-xs text-gray-600">{grv.description}</p>
                 {grv.resolutionNote && (
                   <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 font-medium">
-                    ✓ निर्णय: {grv.resolutionNote}
+                    ✓ Resolution: {grv.resolutionNote}
                   </div>
                 )}
               </div>
@@ -673,21 +673,21 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <Users className="w-7 h-7 text-emerald-600" />
-              एफपीओ थोक एकत्रीकरण एवं कॉर्पोरेट टेंडर पोर्टल
+              FPO Bulk Aggregation & Corporate Tender Portal
             </h2>
-            <p className="text-xs text-gray-500">100+ किसानों की उपज जोड़कर 250 टन का वाणिज्यिक लॉट बनाएं, +₹260/qtl अधिक भाव पाएं</p>
+            <p className="text-xs text-gray-500">Aggregate 100+ smallholder harvests into 250-tonne bulk lots for +₹260/qtl premium</p>
           </div>
 
           <div className="bg-emerald-950 text-white rounded-3xl p-6 sm:p-8 space-y-4 border border-emerald-800">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-black text-white">{selectedFpo.fpoName}</h3>
-              <span className="bg-amber-400 text-amber-950 font-black text-xs px-3 py-1 rounded-full">टेंडर स्वीकृत ✓</span>
+              <span className="bg-amber-400 text-amber-950 font-black text-xs px-3 py-1 rounded-full">Tender Approved ✓</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">किसान सदस्य</span><span className="text-2xl font-black">{selectedFpo.memberFarmersCount}</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">एकत्रित मात्रा</span><span className="text-2xl font-black text-amber-300">{selectedFpo.totalAggregatedQtl} Qtl</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">टेंडर भाव</span><span className="text-2xl font-black">₹{selectedFpo.offeredPrice}</span></div>
-              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">अतिरिक्त FPO लाभ</span><span className="text-2xl font-black text-emerald-400">+₹{(selectedFpo.totalFpoExtraProfit / 100000).toFixed(2)} L</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Member Farmers</span><span className="text-2xl font-black">{selectedFpo.memberFarmersCount}</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Total Volume</span><span className="text-2xl font-black text-amber-300">{selectedFpo.totalAggregatedQtl} Qtl</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Tender Rate</span><span className="text-2xl font-black">₹{selectedFpo.offeredPrice}</span></div>
+              <div className="bg-white/10 p-3 rounded-2xl"><span className="text-emerald-300 block">Extra FPO Profit</span><span className="text-2xl font-black text-emerald-400">+₹{(selectedFpo.totalFpoExtraProfit / 100000).toFixed(2)} L</span></div>
             </div>
           </div>
         </div>
@@ -701,9 +701,9 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <Bot className="w-7 h-7 text-emerald-600" />
-              12-भाषी AI कृषि व मंडी सलाहकार
+              12-Language AI Agri & Market Assistant
             </h2>
-            <p className="text-xs text-gray-500">आवाज पहचान (STT) व टेक्स्ट-टू-स्पीच (TTS) के साथ तत्काल सलाह पाएं</p>
+            <p className="text-xs text-gray-500">Voice recognition (STT) and speech readout (TTS) in all major Indian languages</p>
           </div>
           <VoiceAssistant />
         </div>
@@ -717,21 +717,21 @@ export default function HomePage() {
           <div className="border-b border-gray-200 pb-4">
             <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
               <FileCheck className="w-7 h-7 text-emerald-600" />
-              पारदर्शी सार्वजनिक व्यापार लेजर
+              Public Price Benchmark & Transactions Ledger
             </h2>
-            <p className="text-xs text-gray-500">मंडी बेंचमार्क बनाम कृषिसेतु प्राप्त मूल्य (+11.4% किसान लाभ)</p>
+            <p className="text-xs text-gray-500">Mandi benchmark vs KrishiSetu realized price (+11.4% extra farmer gain)</p>
           </div>
 
           <div className="overflow-x-auto bg-white rounded-3xl border border-gray-200 p-4">
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="bg-gray-50 text-gray-600 font-bold border-b border-gray-200">
-                  <th className="p-3">सौदा कोड</th>
-                  <th className="p-3">फसल</th>
-                  <th className="p-3">मात्रा</th>
-                  <th className="p-3">सहमति दर</th>
-                  <th className="p-3 text-emerald-700">अतिरिक्त किसान लाभ</th>
-                  <th className="p-3">स्थिति</th>
+                  <th className="p-3">Trade Code</th>
+                  <th className="p-3">Crop</th>
+                  <th className="p-3">Quantity</th>
+                  <th className="p-3">Agreed Price</th>
+                  <th className="p-3 text-emerald-700">Extra Gain</th>
+                  <th className="p-3">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 font-medium">
@@ -742,7 +742,7 @@ export default function HomePage() {
                     <td className="p-3">{t.quantityQtl} Qtl</td>
                     <td className="p-3 font-black">₹{t.agreedPricePerQtl}/qtl</td>
                     <td className="p-3 font-black text-emerald-700">+₹{t.extraRealization.toLocaleString("en-IN")}</td>
-                    <td className="p-3"><span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">सेटल्ड ✓</span></td>
+                    <td className="p-3"><span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Settled ✓</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -788,13 +788,13 @@ export default function HomePage() {
         onClose={() => setSelectedOfferForModal(null)}
         offer={selectedOfferForModal}
         onAccept={(id) => {
-          showToast("ऑफर स्वीकार किया गया! एस्क्रो ऑर्डर जनरेट हुआ।");
+          showToast("Offer accepted! Escrow order created.");
         }}
         onCounter={(id, price, note) => {
-          showToast(`काउंटर ऑफर (₹${price}) भेजा गया!`);
+          showToast(`Counter offer (₹${price}) submitted!`);
         }}
         onReject={(id) => {
-          showToast("प्रस्ताव अस्वीकार कर दिया गया।");
+          showToast("Offer rejected.");
         }}
       />
     </div>

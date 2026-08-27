@@ -8,8 +8,8 @@ export interface Language {
 }
 
 export const SUPPORTED_LANGUAGES: Language[] = [
-  { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳", bcp47: "hi-IN", region: "North & Central India" },
   { code: "en", name: "English", nativeName: "English", flag: "🌐", bcp47: "en-IN", region: "All India / Business" },
+  { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳", bcp47: "hi-IN", region: "North & Central India" },
   { code: "raj", name: "Rajasthani", nativeName: "राजस्थानी", flag: "🐪", bcp47: "hi-IN", region: "Rajasthan" },
   { code: "pa", name: "Punjabi", nativeName: "ਪੰਜਾਬੀ", flag: "🌾", bcp47: "pa-IN", region: "Punjab & Haryana" },
   { code: "gu", name: "Gujarati", nativeName: "ગુજરાતી", flag: "🦁", bcp47: "gu-IN", region: "Gujarat" },
@@ -22,4 +22,4 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: "or", name: "Odia", nativeName: "ଓଡ଼ିଆ", flag: "🌊", bcp47: "or-IN", region: "Odisha" },
 ];
 
-export const DEFAULT_LANGUAGE = "hi";
+export const DEFAULT_LANGUAGE = "en";
