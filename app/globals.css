@@ -12,6 +12,31 @@ body {
   color: var(--foreground);
 }
 
+@keyframes ticker-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker-marquee {
+  display: flex;
+  width: max-content;
+  animation: ticker-marquee 35s linear infinite;
+}
+
+.animate-ticker-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .animate-ticker-marquee {
+    animation-duration: 25s;
+  }
+}
+
 @media print {
   body {
     background-color: #ffffff;
